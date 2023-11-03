@@ -13,7 +13,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 
-const uri = "mongodb+srv://thinhkhainguyen:thinhea33@cluster0.thnfg4o.mongodb.net/?retryWrites=true&w=majority"
+const uri = "mongodb+srv://thinhpx33:thinhea33@pos.eofalwt.mongodb.net/?retryWrites=true&w=majority"
+
 
 
 //Mongoose 
@@ -36,7 +37,7 @@ mongoose.connection.on("connected", () =>{
 
 //Middleware
 // app.use("/home",home)
-require("../controller/routes/home")(app)
+require("./controller/routes/home")(app)
 
 app.post("/", (req, res) =>{
     console.log(req.body);
