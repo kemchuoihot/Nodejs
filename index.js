@@ -43,7 +43,9 @@ app.post("/", (req, res) =>{
     console.log(req.body);
 }) 
 
-app.listen(5000,() =>{
+
+const port = process.env.PORT || 5000;
+app.listen(port,() =>{
     connect()
-    console.log('http://localhost:5000/')
+    console.log(`http://localhost:${port}/`)
 });
