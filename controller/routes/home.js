@@ -1,4 +1,4 @@
-const Phone = require('../api/Phone');
+const Phone = require('../models/Phone');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
@@ -26,6 +26,7 @@ module.exports = (app) => {
       } catch (err) {
         res.status(400).send(err);
     }
+  
   });
 
 };
