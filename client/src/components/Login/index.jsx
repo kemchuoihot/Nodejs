@@ -2,22 +2,40 @@ import { useState } from 'react';
 import styles from "./styles.module.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
+//Modal
+// import Button from 'react-bootstrap/Button';
+// import Modal from 'react-bootstrap/Modal';
+
 
 const Signup = () => {
-    const [email,setEmail] = useState("");
+    const [username,setusername] = useState("");
     const [password,setPassword] = useState("");
     const [error,setError] = useState("");
 
-
+    const navigte = useNavigate();
+    // axios.defaults.withCredentials = true;
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:5000/auth", {email,password});
-            console.log(response);
-            localStorage.setItem("token",response.data);
-            window.location = "/";
+            const response = await axios.post("http://localhost:5000/auth", {username,password})
+            .then((result) => {
+                if(result.data.loginStatus){
+                    navigte("/dashboard");
+                }else{
+                    setError(result.data.Error);
+                }
+            })
+                
+
+            ;
+            // console.log(response);
+            // localStorage.setItem("token",response.data);
+            // window.location = "/";
         } catch (error) {
             console.log(error);
+            
             setError(error.response.data.message);
         }
     }
@@ -29,7 +47,7 @@ const Signup = () => {
                 <form className={styles.form_container}>
                     <h1>Welcome to POS !</h1>
                     <span>Use your account to login.</span>
-                    <input type="email" placeholder="Email" name="email" onChange={(e) => setEmail(e.target.value)} value={email} required className={styles.input} />
+                    <input type="username" placeholder="Username" name="username" onChange={(e) => setusername(e.target.value)} value={username} required className={styles.input} />
                     <input type="password" placeholder="Password" name="password" onChange={(e) => setPassword(e.target.value)} value={password} required className={styles.input} />
                     {error && <div className={styles.error_msg}>{error}</div>}
                     <a>Forget your password ?</a>
@@ -40,7 +58,7 @@ const Signup = () => {
                 </div>
                 <div className={styles.right}>
                     <h1>Xin chao!</h1>
-                    <span>You can login with your email. If you don't have account, please contact to admin.</span>
+                    <span>You can login with your username. If you don't have account, please contact to admin.</span>
                     <Link to="/signup">
                         <button type="button" className={styles.white_btn}>Sign up</button>
                     </Link>

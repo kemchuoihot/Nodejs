@@ -4,7 +4,6 @@ body {
   font-family: 'Montserrat',
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  background: linear-gradient(120deg, #3ca7ee, #9b408f);
   
   /* font-family: 'Poppins', sans-serif; */
   -moz-osx-font-smoothing: grayscale;
@@ -14,5 +13,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 
 /* Css tổng */

@@ -1,0 +1,16 @@
+li {
+   border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+li:hover {
+   background-color: #b5b5b59b;
+}
+
+.bi-list{
+    font-size: 24px;
+}
+
+*{
+    transition: all 0.3s linear;
+}
