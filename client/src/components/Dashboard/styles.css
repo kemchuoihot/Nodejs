@@ -12,5 +12,38 @@ li:hover {
 }
 
 *{
-    transition: all 0.3s linear;
+    transition: all 0.1s linear;
+}
+
+.bg{
+    background-color: #618264;
+}
+
+i:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.tog{
+    position: relative;
+    left: 11px;
+    padding-right: 15px;
+}
+
+
+.avt{
+    width: 40px;
+    border-radius: 50%;
+}
+
+.title{
+    width: 100%;
+    text-align: center;
+    color: #3282B8;
+}
+
+.user-name{
+    height: 30px;
+    width: 100px;
+    margin: auto;
 }

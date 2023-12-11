@@ -4,6 +4,12 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
+
+import { waveform } from 'ldrs'
+
+waveform.register()
+
+
 //Modal
 // import Button from 'react-bootstrap/Button';
 // import Modal from 'react-bootstrap/Modal';
@@ -13,31 +19,46 @@ const Signup = () => {
     const [username,setusername] = useState("");
     const [password,setPassword] = useState("");
     const [error,setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
+
+
+    
     const navigte = useNavigate();
     // axios.defaults.withCredentials = true;
     const handleSubmit = async (e) => {
+        setLoading(true);
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:5000/auth", {username,password})
             .then((result) => {
-                if(result.data.loginStatus){
+                console.log(result);
+                const res = result.data;
+                if(res.loginStatus){
+                    localStorage.setItem("token",res.token);
                     navigte("/dashboard");
-                }else{
-                    setError(result.data.Error);
                 }
+                setLoading(false);
+                // if(result.data.loginStatus){
+                //     navigte("/dashboard");
+                // }else{
+                //     setError(result.data.Error);
+                // }
             })
-                
+              
 
             ;
             // console.log(response);
             // localStorage.setItem("token",response.data);
             // window.location = "/";
         } catch (error) {
+            setLoading(false);
+
             console.log(error);
             
             setError(error.response.data.message);
         }
+        
     }
 
     return (
@@ -51,17 +72,22 @@ const Signup = () => {
                     <input type="password" placeholder="Password" name="password" onChange={(e) => setPassword(e.target.value)} value={password} required className={styles.input} />
                     {error && <div className={styles.error_msg}>{error}</div>}
                     <a>Forget your password ?</a>
+
                     <button type='submit' className={styles.green_btn} onClick={(e)=> handleSubmit(e)}>
-                        Sign In
+                        {loading ? (<l-waveform
+                        size="25"
+                        stroke="2.5"
+                        speed="1" 
+                        color="white" 
+                        ></l-waveform>) :"Sign In"}
+                        
                     </button>
                 </form>
                 </div>
                 <div className={styles.right}>
                     <h1>Xin chao!</h1>
                     <span>You can login with your username. If you don't have account, please contact to admin.</span>
-                    <Link to="/signup">
-                        <button type="button" className={styles.white_btn}>Sign up</button>
-                    </Link>
+                    
                 </div>
             </div>
         </div>

@@ -1,0 +1,37 @@
+.title{
+    color: #E9B384;
+}
+
+.btn-add{
+    background-color: #5C8374;
+}
+.btn-add:hover{
+    background-color: #436055;
+}
+
+.btn-refresh{
+    background-color: #93B1A6;
+}
+.btn-refresh:hover{
+    background-color: #5C8374;
+}
+
+.bg-head{
+    background-color: #79AC78;
+}
+
+.badge-success{
+    background-color: #79AC78;
+}
+
+.badge-primary{
+    background-color: #82AAE3;
+}
+
+.badge-danger{
+    background-color: #AA5656;
+}
+
+.btn-sm:hover{
+    background-color: #79AC78;
+}

@@ -5,6 +5,7 @@ const joi = require('joi')
 const bcrypt = require('bcrypt');
 const loginValidator = require('../routes/validator/loginValidator');
 const jwt = require('jsonwebtoken');
+const midAdd = require('../middleware/login');
 
 router.post('/',loginValidator,async (req,res) =>{
     try {
@@ -22,7 +23,6 @@ router.post('/',loginValidator,async (req,res) =>{
         }
         else{
             const token = jwt.sign({username: account.username},process.env.JWTPRIVATEKEY,{expiresIn: '1h'});
-            res.cookie('token',token);
             res.json({loginStatus: true, token: token});
         }
     } catch (error) {
@@ -31,5 +31,17 @@ router.post('/',loginValidator,async (req,res) =>{
         res.status(500).send({message:"Server Error"})
     }
 })
+
+
+
+router.get('/employee',async (req, res) => {
+    try {
+        const employee = await Account.find();
+        res.json({Status: true, employee});
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+});
 
 module.exports = router;

@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const accountRoutes = require('./controller/routes/account')
 const authRoutes = require('./controller/routes/auth')
+const verifyRoutes = require('./controller/routes/verify')
 
 const app = express();
 // app.use("/home", require('./routes/home'));
@@ -37,6 +38,8 @@ require("./controller/routes/home")(app)
 // require("./controller/routes/auth")(app)
 app.use("/account",accountRoutes)
 app.use("/auth",authRoutes)
+app.use("/verify",verifyRoutes)
+
 
 
 //Routes
