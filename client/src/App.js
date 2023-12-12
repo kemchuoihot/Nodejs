@@ -1,8 +1,9 @@
 import {Route, Routes, Navigate} from 'react-router-dom'
 import Main from './components/Main'
 import Login from './components/Login'
-// import Signup from './components/Singup';
 import Dashboard from './components/Dashboard';
+
+// import Signup from './components/Singup';
 import Home from './components/Home';
 import Employee from './components/Employee';
 import Product from './components/Product';
@@ -10,7 +11,7 @@ import Profile from './components/Profile';
 import AddEmployee from './components/Employee/addEmployee';
 import Verify from './components/Verify';
 function App() {
-  const user = localStorage.getItem('token');
+
   return (
     <Routes>
       {/* {user && <Route path="/" exact element={<Main />} />} */}
@@ -31,5 +32,3 @@ function App() {
 }
 
 export default App;
-
-// Xử lý chính

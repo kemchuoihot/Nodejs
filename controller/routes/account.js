@@ -7,6 +7,7 @@ const signupValidator = require('./validator/signupValidator');
 const midAdd = require('../middleware/login');
 const jwt = require('jsonwebtoken');
 const sendEmail = require('../api/sender');
+
 router.get('/', (req, res) => {
     res.send("Staff page")
 });
@@ -32,8 +33,6 @@ router.post('/',midAdd,signupValidator,async (req,res) =>{
         console.log(error.message)
         res.status(500).send({message: "Server Error", error: error.message})
     }
-
-    
 })
 
 module.exports = router;
