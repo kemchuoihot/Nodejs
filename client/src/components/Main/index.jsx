@@ -1,13 +1,17 @@
+  import { Carousel } from 'react-bootstrap';
   import 'bootstrap/dist/css/bootstrap.min.css';
   import 'bootstrap/dist/js/bootstrap.bundle.min.js';
   import '@popperjs/core/dist/umd/popper.min';
+  import './styles.module.css';
 
   import React, { useState, useEffect } from 'react';
   import axios from 'axios';
 
   const Main = () => {
     const [items, setItems] = useState([]);
+    const [androidItems, setAndroidItems] = useState([]);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [showDetails, setShowDetails] = useState(false);
     
     useEffect(() => {
       const fetchData = async () => {
@@ -22,6 +26,18 @@
           }
       };
       fetchData();
+    }, []);
+
+    useEffect(() => {
+      const fetchAndroidData = async () => {
+        try {
+          const response = await axios.get('http://localhost:5000/android');
+          setAndroidItems(response.data);
+        } catch (error) {
+          console.log('Error fetching Android data:', error);
+        }
+      };
+      fetchAndroidData();
     }, []);
 
     const [orderItemsArray, setOrderItemsArray] = useState([]);
@@ -40,7 +56,7 @@
     };
 
     const orderTotalItems = () => {
-      return orderItemsArray.length; 
+      return orderItemsArray.length; // kdhfjdhjfhdjfhdjf
     };
 
     const orderTotalCost = () => {
@@ -65,8 +81,25 @@
     };
 
     const handleItemClick = (item) => {
-      console.log('Item clicked:', item)
-      setSelectedItem(item);
+      console.log('Item clicked:', item);
+      if (selectedItem && selectedItem._id === item._id) {
+        setSelectedItem(null); // Nếu người dùng click vào sản phẩm đang được hiển thị, ẩn nó đi
+        setShowDetails(false);
+      } else {
+        setSelectedItem(item);
+        setShowDetails(true);
+      }
+    };
+
+    const handleAndroidItemClick = (item) => {
+      console.log('Item clicked:', item);
+      if (selectedItem && selectedItem._id === item._id) {
+        setSelectedItem(null); // Nếu người dùng click vào sản phẩm đang được hiển thị, ẩn nó đi
+        setShowDetails(false);
+      } else {
+        setSelectedItem(item);
+        setShowDetails(true);
+      }
     };
     
     return (
@@ -94,18 +127,17 @@
                       <div className="row row-cols-1 row-cols-md-4 g-4">
                           {items.map(item => (
                               <div className="col" key={item._id}>
-                                  <div className="card" onClick={() => handleItemClick(item)}>
+                                  <div className="card" style={{padding: '20px', width: '100%' }} onClick={() => handleItemClick(item)}>
                                       <img draggable="false" src={item.photo[0]} className="card-img-top" alt="..." />
                                       <div className="card-body">
-                                        <a>Apple</a>
-                                        <h5 className="card-title">{item.name}</h5>
-                                        <p className="card-text fw-bold">Price: {item.price ? formatPrice(item.price) : "Price not available"}</p>
+                                        <h5 className="card-title" style={{ fontFamily: 'Roboto', fontWeight: 'bold', fontSize: '1em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</h5>
+                                        <p className="card-text fw-bold iphone-price" style={{ color: 'red', fontSize: '0.8em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.price ? formatPrice(item.price) : "Price not available"}</p>
                                           {selectedItem && selectedItem._id === item._id ? (
                                             <>
-                                              <p className="card-text fw-bold">Brand: {item.brand}</p>
-                                              <p className="card-text fw-bold">Colors: {item.color}</p>
-                                              <p className="card-text fw-bold">Description: {item.desc}</p>
-                                              <p className="card-text fw-bold">Status: {item.status}</p>
+                                              <p className="card-text">Brand: {item.brand}</p>
+                                              <p className="card-text">Colors: {item.color}</p>
+                                              <p className="card-text">Description: {item.desc}</p>
+                                              <p className="card-text">Status: {item.status}</p>
                                             </>
                                           ) : null}
                                       </div>
@@ -113,7 +145,31 @@
                               </div>
                           ))}
                       </div>
-                  </div>
+                    </div>
+
+                    <div className="tab-pane fade show active" id="pills-android" role="tabpanel" aria-labelledby="pills-android-tab">
+                      <div className="row row-cols-1 row-cols-md-4 g-4">
+                          {androidItems.map(item => (
+                              <div className="col" key={item._id}>
+                                  <div className="card" style={{padding: '20px', width: '100%' }} onClick={() => handleAndroidItemClick(item)}>
+                                      <img draggable="false" src={item.photo[0]} className="card-img-top" alt="..." />
+                                      <div className="card-body">
+                                        <h5 className="card-title" style={{ fontFamily: 'Roboto', fontWeight: 'bold', fontSize: '1em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</h5>
+                                        <p className="card-text fw-bold iphone-price" style={{ color: 'red', fontSize: '0.8em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.price ? formatPrice(item.price) : "Price not available"}</p>
+                                          {selectedItem && selectedItem._id === item._id ? (
+                                            <>
+                                              <p className="card-text">Brand: {item.brand}</p>
+                                              <p className="card-text">Colors: {item.color}</p>
+                                              <p className="card-text">Description: {item.desc}</p>
+                                              <p className="card-text">Status: {item.status}</p>
+                                            </>
+                                          ) : null}
+                                      </div>
+                                  </div>
+                              </div>
+                          ))}
+                      </div>
+                    </div>
               </div>
           </div>
 
