@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
@@ -14,6 +16,9 @@ infinity.register()
 const Employee = () => {
     const [employee, setEmployee] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(() => { 
         fetchData();
@@ -40,6 +45,7 @@ const Employee = () => {
 
 
     return(
+        <>
         <div className="px-5 mt-3">
             <div className="d-flex justify-content-center">
                 <h3 className='title'>Employee List</h3>
@@ -81,13 +87,23 @@ const Employee = () => {
                                     {e.status === "active" && <span className="badge badge-success rounded-pill d-inline">Active</span>}
                                     {e.status === "block" && <span className="badge badge-danger rounded-pill d-inline">Block</span>}
                                 </td>
-                                <td><button
+                                <td>
+                                    <Button 
                                         type="button"
-                                        className ="btn btn-outline-secondary btn-rounded btn-sm"
+                                        className ="btn btn-outline-secondary btn-rounded btn-green btn-sm mr-2"
+                                        data-mdb-ripple-color="dark"
+                                        onClick={handleShow}
+                                        >
+                                    Edit
+                                    </Button>
+                                    <Button 
+                                        type="button"
+                                        className ="btn btn-outline-danger btn-rounded btn-sm"
                                         data-mdb-ripple-color="dark"
                                         >
-                                Edit
-                                </button></td>
+                                    Block
+                                    </Button>
+                                </td>
                             </tr>
                         ))
                     }
@@ -95,6 +111,21 @@ const Employee = () => {
                 </table>
             </div>
         </div>
+        <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      </>
     )
 };
 export default Employee;
