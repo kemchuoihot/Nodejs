@@ -4,10 +4,6 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
-//Modal
-// import Button from 'react-bootstrap/Button';
-// import Modal from 'react-bootstrap/Modal';
-
 
 const Signup = () => {
     const [username,setusername] = useState("");

@@ -18,7 +18,6 @@ router.post('/', async (req,res) =>{
             if(account){
                 return res.status(409).send({message: "Already exists"});
             }
-            // const salt = await bcrypt.genSalt(Number(process.env.SALT));
             const hashPassword = await bcrypt.hash(req.body.password,10);
             console.log(req.body)
             const {name,email} = req.body
@@ -30,7 +29,7 @@ router.post('/', async (req,res) =>{
             console.log(error.message)
             res.status(500).send({message: "Server Error", error: error.message})
         }
-    }else{
+     } else{
         let messages = result.mapped();
         let message = '';
         for(m in messages){
@@ -39,8 +38,6 @@ router.post('/', async (req,res) =>{
         }
         return res.json({message: message});
     }
-
-    
 })
 
 module.exports = router;

@@ -6,17 +6,6 @@ import "./styles.css";
 
 
 const Dashboard = () => {
-//   const anvigate = useNavigate()
-//   axios.defaults.withCredentials = true
-//   const handleLogout = () => {
-//     axios.get('http://localhost:3000/auth/logout')
-//     .then(result => {
-//       if(result.data.Status) { 
-//         localStorage.removeItem("valid")
-//         anvigate('/')
-//       }
-//     })
-//   }
 
 const [isOpen,setIsOpen] = React.useState(false)
 const toggle = () => setIsOpen(!isOpen);
