@@ -33,3 +33,7 @@
     margin: 4px 2px;
     cursor: pointer;
 }
+
+.iphone-price {
+    color: red !important;
+}

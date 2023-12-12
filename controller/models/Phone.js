@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const PhoneSchema = new mongoose.Schema({
   name:{
     type: String,
@@ -27,9 +26,12 @@ const PhoneSchema = new mongoose.Schema({
     min: 0
   },
   status:{
-    type: String,
-    required: true
+    type: [{
+      type: String,
+      enum: ['available', 'unavailable']
+    }],
+    default: ['available']
   }
 })
 
-module.exports = mongoose.model('Phone', PhoneSchema);;
+module.exports = mongoose.model('Phone', PhoneSchema, 'Phones');

@@ -1,60 +1,30 @@
+/* Content: Handles HTTP requests to perform CRUD (Create, Read, Update, Delete) operations on phone objects */
+const express = require('express');
+const router = express.Router();
+const bodyParser = require("body-parser")
 const Phone = require('../models/Phone');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 
+router.use(bodyParser.urlencoded({ extended: true }));
+router.get('/', async (req, res) => {
+  try {
+    const phones = await Phone.find();
+    console.log(phones);
+    res.status(200).json(phones);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
 
-module.exports = (app) => {
-  app.use(bodyParser.urlencoded({ extended: false }))
-  app.post('/home', async(req, res) => {
-    try {
-      const {name,brand,color,photo,desc,price,status} = req.body;
-      const phone = new Phone({name,brand,color,photo,desc,price,status});
-      await phone.save();
-      res.status(201).send(phone);
-    } catch (err) {
-      res.status(400).send(err);
-    }
-    console.log(req.body);
-  });
-  app.post('/home:id', async(req, res) => {
-    // Validate ObjectId 
-      try {
-        // const {name,brand,color,photo,desc,price,status} = req.body;
-        // const phone = new Phone({name,brand,color,photo,desc,price,status});
-        const update = await Phone.findByIdAndUpdate(req.params.id,{ $set: req.body});
-        res.status(201).send(update);
-      } catch (err) {
-        res.status(400).send(err);
-    }
-  
-  });
+router.post('/', async (req, res) => {
+  try {
+    const { name, brand, color, photo, desc, price, status } = req.body;
+    const phone = new Phone({ name, brand, color, photo, desc, price, status });
+    await phone.save();
+    res.status(201).send(phone);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+  console.log(req.body);
+});
 
-};
-
-
-
-// routes.get('/', (req, res) => {
-//     res.end("Oke")
-// });
-
-// routes.post('/', async (req, res) => {
-//     // try {
-//     //   const phone = new Phone(req.body);
-//     //   await phone.save();
-//     //   res.status(201).send(phone);
-//     // } catch (err) {
-//     //   res.status(400).send(err);
-//     // }
-//     console.log(req.body);
-//   });
-
-
-// routes.put('/:id', async (req, res) => {
-// try {
-//     const phone = new Phone(req.body);
-//     await phone.findByIdAndUpdate(req.params.id,{ $set: req.body });
-//     res.status(201).send(phone);
-// } catch (err) {
-//     res.status(400).send(err);
-// }
-// });
+module.exports = router;
