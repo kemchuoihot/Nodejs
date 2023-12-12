@@ -33,11 +33,11 @@ mongoose.connection.on("connected", () =>{
 // app.use("/home",home)
 app.use(cors())
 
-require("./controller/routes/home")(app)
-// require("./controller/routes/account")(app)
-// require("./controller/routes/auth")(app)
-app.use("/account",accountRoutes)
-app.use("/auth",authRoutes)
+
+// app.use("/home", homeRoutes);
+app.use("/account", accountRoutes);
+app.use("/auth", authRoutes);
+// require("./controller/routes/home")(app)
 app.use("/verify",verifyRoutes)
 
 
