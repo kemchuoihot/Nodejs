@@ -3,24 +3,31 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-router.get('/:token', (req, res) => {
-    const { token } = req.params;
+router.get('/:token', async (req, res) => {
+    const token = req.params.token;
+    try {
+        // Verify the token
+        const decoded = jwt.verify(token, process.env.JWTPRIVATEKEY);
+        // The decoded payload should contain the user id
+        const username = decoded.username;
+        const user = await Account.findOne({ username: username });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
 
-    // Verify the token
-    jwt.verify(token,process.env.JWTPRIVATEKEY, (err, decoded) => {
-        console.log(decoded)
-        // if (err) {
-        //     // Handle invalid token
-        //     res.status(401).json({ message: 'Invalid token' });
-        // } else {
-        //     // Update the user's status to "active"
-        //     // Your implementation here...
-        //     // For example, you can update the user's status in the database
+        // Update the user's status to "active"
+        user.status = 'active';
+        await user.save();
 
-        //     // Send a response indicating success
-        //     res.status(200).json({status: true},{ message: 'User verified successfully' });
-        // }
-    });
+        res.json({ message: 'Account activated' });
+    } catch (error) {
+        console.log(error);
+        if (error instanceof jwt.JsonWebTokenError) {
+            res.status(401).json({ message: 'Invalid token' });
+        } else {
+            res.status(500).json({ message: 'An error occurred' });
+        }
+    }
 });
 
 module.exports = router;
