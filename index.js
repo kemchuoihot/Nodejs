@@ -50,7 +50,6 @@ app.use('/home', (req, res, next) => {
 // app.use("/home", homeRoutes);x
 app.use("/account", accountRoutes);
 app.use("/auth", authRoutes);
-// require("./controller/routes/home")(app)
 app.use("/verify",verifyRoutes)
 
 //Routes
