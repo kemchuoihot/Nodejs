@@ -6,6 +6,20 @@ import "./styles.css";
 
 
 const Dashboard = () => {
+//   const anvigate = useNavigate()
+//   axios.defaults.withCredentials = true
+  const handleLogout = () => {
+    // axios.get('http://localhost:3000/auth/logout')
+    // .then(result => {
+    //   if(result.data.Status) { 
+    //     localStorage.removeItem("valid")
+    //     anvigate('/login')
+    //   }
+    // })
+    localStorage.removeItem("token");
+        window.location.replace("/login");
+    
+  }
 
 const [isOpen,setIsOpen] = React.useState(false)
 const toggle = () => setIsOpen(!isOpen);
@@ -13,7 +27,7 @@ const toggle = () => setIsOpen(!isOpen);
   return (
     <div className="container-fluid" >
       <div className="row flex-nowrap">
-        <div style={{width: isOpen ? "250px" : "60px"}} className="bg-dark">
+        <div style={{width: isOpen ? "250px" : "60px"}} className="bg">
           <div  className={isOpen ? "d-flex flex-column align-items-center align-items-sm-start text-white p-3 min-vh-100" : "d-flex flex-column align-items-center align-items-sm-start text-white min-vh-100"}>
             <div className="w-100 row justify-content-between">
                 <div  style={{display: isOpen ? "block" : "none"}} className="">
@@ -38,7 +52,7 @@ const toggle = () => setIsOpen(!isOpen);
                   to="/dashboard"
                   className="nav-link text-white px-0 align-middle"
                 >
-                  <i className="fs-4 bi-speedometer2 mr-2" ></i>
+                  <i className="tog fs-4 bi-speedometer2 mr-2" ></i>
                   <span className="mask  ms-2" style={{display: isOpen ? "inline" : "none"}}>Dashboard</span>
                 </Link>
               </li>
@@ -47,7 +61,7 @@ const toggle = () => setIsOpen(!isOpen);
                   to="/dashboard/employee"
                   className="nav-link px-0 align-middle text-white"
                 >
-                  <i className="fs-4 bi-people mr-2"></i>
+                  <i className="tog fs-4 bi-people mr-2"></i>
                   <span className="ms-2 " style={{display: isOpen ? "inline" : "none"}}>
                     Manage Employees
                   </span>
@@ -55,11 +69,11 @@ const toggle = () => setIsOpen(!isOpen);
               </li>
               <li className="w-100 p-2">
                 <Link
-                  to="/dashboard/category"
+                  to="/dashboard/product"
                   className="nav-link px-0 align-middle text-white"
                 >
-                  <i className="fs-4 bi-columns mr-2"></i>
-                  <span className="ms-2" style={{display: isOpen ? "inline" : "none"}}>Category</span>
+                  <i className="tog fs-4 bi-columns mr-2"></i>
+                  <span className="ms-2" style={{display: isOpen ? "inline" : "none"}}>Product</span>
                 </Link>
               </li>
               <li className="w-100 p-2">
@@ -67,26 +81,30 @@ const toggle = () => setIsOpen(!isOpen);
                   to="/dashboard/profile"
                   className="nav-link px-0 align-middle text-white"
                 >
-                  <i className="fs-4 bi-person ms-2 mr-2"></i>
+                  <i className="tog fs-4 bi-person ms-2 mr-2"></i>
                   <span className="ms-2" style={{display: isOpen ? "inline" : "none"}}>Profile</span>
                 </Link>
               </li>
               <li className="w-100 pt-2" 
-            //   onClick={handleLogout}
+              onClick={handleLogout}
               >
               <Link
                   className="nav-link px-0 align-middle text-white"
                 >
-                  <i className="fs-4 bi-power p-2"></i>
+                  <i className="tog fs-4 bi-power p-2 ms-2 mr-3"></i>
                   <span className="ms-2" style={{display: isOpen ? "inline" : "none"}}>Logout</span>
                 </Link>
               </li>
             </ul>
           </div>
         </div>
-        <div className="col p-0 m-0">
-            <div className="p-2 d-flex justify-content-center shadow">
-                <h4>Emoployee Management System</h4>
+        <div className="w-100 col p-0 m-0">
+            <div className="p-2 d-flex shadow">
+                <h4 className="pt-2 title"></h4>
+                <span className="d-flex ml-auto">
+                  <span className="user-name">Phuc Thinh</span>
+                  <img src="https://fullstack.edu.vn/static/media/fallback-avatar.155cdb2376c5d99ea151.jpg" alt="users" className="avt"/>
+                </span>
             </div>
             <Outlet />
         </div>

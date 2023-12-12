@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const accountRoutes = require('./controller/routes/account');
 const authRoutes = require('./controller/routes/auth');
 const homeRoutes = require('./controller/routes/home');
+const verifyRoutes = require('./controller/routes/verify')
 
 const app = express();
 
@@ -45,10 +46,14 @@ app.use('/home', (req, res, next) => {
   next();
 });
 
-// Sử dụng route trong file homeRoutes
+
 app.use("/home", homeRoutes);
 app.use("/account", accountRoutes);
 app.use("/auth", authRoutes);
+require("./controller/routes/home")(app)
+app.use("/verify",verifyRoutes)
+
+//Routes
 
 app.use(cors());
 
