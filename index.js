@@ -47,6 +47,7 @@ app.use('/home', (req, res, next) => {
 });
 
 
+
 app.use("/home", homeRoutes);
 app.use("/account", accountRoutes);
 app.use("/auth", authRoutes);
