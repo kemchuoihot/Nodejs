@@ -44,4 +44,28 @@ router.get('/employee',async (req, res) => {
     }
 });
 
+router.post('/block_employee',async (req, res) => {
+    try {
+        const employee = await Account.findOne({email: req.body.email});
+        if (employee) {
+            if(employee.status === "inactive"){
+                return res.status(401).send({message:"Can not block a inactive account"});
+            }
+            else if (employee.status === "active") {
+                newStatus = "block";
+            } else if (employee.status === "block") {
+                newStatus = "active";
+            }
+            employee.status = newStatus;
+            await employee.save();
+            console.log(employee)
+            res.json({Status: true, employee});
+        } else {
+            res.status(404).json({message: "Employee not found"});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+})
 module.exports = router;

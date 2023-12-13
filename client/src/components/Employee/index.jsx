@@ -19,6 +19,12 @@ const Employee = () => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [showEdit, setShowEdit] = useState(false);
+    const handleCloseEdit = () => setShowEdit(false);
+    const handleShowEdit = () => setShowEdit(true);
+    const [block, setBlock] = useState([]);
+    const [blockModal, setBlockModal] = useState("");
+    const [status, setStatus] = useState("");
 
     useEffect(() => { 
         fetchData();
@@ -42,13 +48,24 @@ const Employee = () => {
             setLoading(false);
         }, 1000);
     };
+    const blockEmployee = () => {
+        axios.post('http://localhost:5000/auth/block_employee', {email: block})
+        .then(result =>{
+            if(result.data.Status){
+                fetchData();
+                setBlock("")
+            }else{
+                alert(result.data.message);
+            }
+        }).catch(error =>{ console.log(error)});
+    }
 
 
     return(
         <>
         <div className="px-5 mt-3">
             <div className="d-flex justify-content-center">
-                <h3 className='title'>Employee List</h3>
+                <h1 className='title'>Employee List</h1>
             </div>
             <div className="d-flex justify-content-between">
                 <Link to="/dashboard/add_employee" className="btn btn-info btn-add">
@@ -73,6 +90,7 @@ const Employee = () => {
                             <th scope='col'>Email</th>
                             <th scope='col'>Status</th>
                             <th scope='col'>Action</th>
+                            <th scope='col'>Block</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,17 +110,24 @@ const Employee = () => {
                                         type="button"
                                         className ="btn btn-outline-secondary btn-rounded btn-green btn-sm mr-2"
                                         data-mdb-ripple-color="dark"
-                                        onClick={handleShow}
+                                        onClick={() => { handleShowEdit(); setBlockModal(e.name); }}
                                         >
                                     Edit
-                                    </Button>
-                                    <Button 
-                                        type="button"
-                                        className ="btn btn-outline-danger btn-rounded btn-sm"
-                                        data-mdb-ripple-color="dark"
+                                </Button>
+                                </td>
+                                <td>
+                                    {e.status === "inactive" ? null :
+                                
+                                        <Button 
+                                            type="button"
+                                            className = {e.status === "block" ? "btn btn-outline-secondary btn-rounded btn-blue text-white btn-sm mr-2" : "btn btn-outline-secondary btn-rounded btn-red btn-sm mr-2"}
+                                            // className ="btn btn-outline-danger btn-rounded btn-red btn-sm"
+                                            data-mdb-ripple-color="dark"
+                                            onClick={() => { setStatus(e.status);setBlock(e.email); handleShow(); setBlockModal(e.name); }}
                                         >
-                                    Block
-                                    </Button>
+                                            {e.status === "active" ? "Block":"Unblock"}
+                                        </Button>
+                                    }
                                 </td>
                             </tr>
                         ))
@@ -112,19 +137,34 @@ const Employee = () => {
             </div>
         </div>
         <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+            <Modal.Header closeButton>
+            <Modal.Title>Block employee</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Do you really want to block/unblock <em>{blockModal}</em>!?</Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                Close
+            </Button>
+            <Button variant={status === "block" ? "primary" : "danger"} onClick={() => { handleClose(); blockEmployee(); }}>
+                {status === "block" ? "UnBlock" : "Block"}
+            </Button>
+            </Modal.Footer>
+        </Modal>
+        
+        <Modal show={showEdit} onHide={handleCloseEdit}>
+            <Modal.Header closeButton>
+                <Modal.Title>Resend Gmail Login</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Do you want to resend the Gmail login for <em>{blockModal}</em>?</Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseEdit}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={() => { handleClose(); /* Add your logic to resend Gmail login for staff here */ }}>
+                    Resend
+                </Button>
+            </Modal.Footer>
+        </Modal>
       </>
     )
 };
