@@ -46,6 +46,28 @@ html {
     background-color: #AA5656;
 }
 
-.btn-green:hover {
+.btn-green {
+    color: #fff;
     background-color: #79AC78;
+}
+.btn-green:hover {
+    background-color: #527652;
+}
+.btn-green:focus {
+    background-color: #527652;
+}
+.btn-red{
+    color: #fff;
+    background-color: #AA5656;
+}
+.btn-red:hover{
+    color: #fff;
+    background-color: #9b2323;
+}
+.btn-red:focus{
+    color: #fff;
+    background-color: #9b2323;
+}
+.btn-blue{
+    background-color: #82AAE3;
 }

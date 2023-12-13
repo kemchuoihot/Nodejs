@@ -24,7 +24,7 @@ router.post('/',midAdd,signupValidator,async (req,res) =>{
         const username = email.split('@')[0]
         const user = new Account({name:name,email:email,username:username,password:hashPassword});
         await user.save();
-        const token = jwt.sign(user.toJSON(),process.env.JWTPRIVATEKEY,{expiresIn: '10m'});
+        const token = jwt.sign(user.toJSON(),process.env.JWTPRIVATEKEY,{expiresIn: '1m'});
         await sendEmail(email,'Login',`http://localhost:3000/verify?token=${token}`);
 
         res.status(201).send({message:"Success to create account!"})

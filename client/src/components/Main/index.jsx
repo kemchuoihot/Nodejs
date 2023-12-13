@@ -5,7 +5,6 @@
 
   import React, { useState, useEffect } from 'react';
   import axios from 'axios';
-  import { set } from 'mongoose';
 
   const Main = () => {
     const [iphoneItems, setIphoneItems] = useState([]);

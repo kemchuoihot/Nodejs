@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const loginValidator = require('../routes/validator/loginValidator');
 const jwt = require('jsonwebtoken');
 const midAdd = require('../middleware/login');
+const sendEmail = require('../api/sender');
 
 router.post('/',loginValidator,async (req,res) =>{
     try {
@@ -43,5 +44,44 @@ router.get('/employee',async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
+router.post('/block_employee',async (req, res) => {
+    try {
+        const employee = await Account.findOne({email: req.body.email});
+        if (employee) {
+            if(employee.status === "inactive"){
+                return res.status(401).send({message:"Can not block a inactive account"});
+            }
+            else if (employee.status === "active") {
+                newStatus = "block";
+            } else if (employee.status === "block") {
+                newStatus = "active";
+            }
+            employee.status = newStatus;
+            await employee.save();
+            console.log(employee)
+            res.json({Status: true, employee});
+        } else {
+            res.status(404).json({message: "Employee not found"});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+})
+
+router.post('/newtoken', async (req, res) => {
+    try {
+        const account = await Account.findOne({email: req.body.email});
+        console.log(account)
+        const token = jwt.sign(account.toJSON(),process.env.JWTPRIVATEKEY,{expiresIn: '1m'});
+        await sendEmail(req.body.email,'Login',`http://localhost:3000/verify?token=${token}`);
+        res.status(201).send({message:"Success to resend gmail!"})
+        
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send({message: "Server Error", error: error.message})
+    }
+})
 
 module.exports = router;
