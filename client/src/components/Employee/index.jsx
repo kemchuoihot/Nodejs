@@ -25,6 +25,7 @@ const Employee = () => {
     const [block, setBlock] = useState([]);
     const [blockModal, setBlockModal] = useState("");
     const [status, setStatus] = useState("");
+    const [emailResent, setEmailResent] = useState("");
 
     useEffect(() => { 
         fetchData();
@@ -59,6 +60,17 @@ const Employee = () => {
             }
         }).catch(error =>{ console.log(error)});
     }
+    const resend = (email) => {
+        axios.post('http://localhost:5000/auth/newtoken', {email})
+        .then(result =>{
+            if(result.data.Status){
+                fetchData();
+            }else{
+                alert(result.data.message);
+            }
+        }).catch(error =>{ console.log(error)})
+    };
+
 
 
     return(
@@ -110,13 +122,25 @@ const Employee = () => {
                                         type="button"
                                         className ="btn btn-outline-secondary btn-rounded btn-green btn-sm mr-2"
                                         data-mdb-ripple-color="dark"
-                                        onClick={() => { handleShowEdit(); setBlockModal(e.name); }}
+                                        onClick={() => { handleShowEdit(); setBlockModal(e.name); setEmailResent(e.email);}}
                                         >
                                     Edit
                                 </Button>
                                 </td>
                                 <td>
-                                    {e.status === "inactive" ? null :
+                                    {e.status === "inactive" ? 
+                                    <Button 
+                                        type="button"
+                                        className = ""
+                                        size='sm'
+                                        data-mdb-ripple-color="dark"
+                                        variant="outline-danger"
+                                        disabled
+                                    >
+                                        Block
+                                        
+                                    </Button>
+                                 :
                                 
                                         <Button 
                                             type="button"
@@ -126,6 +150,7 @@ const Employee = () => {
                                             onClick={() => { setStatus(e.status);setBlock(e.email); handleShow(); setBlockModal(e.name); }}
                                         >
                                             {e.status === "active" ? "Block":"Unblock"}
+                                            
                                         </Button>
                                     }
                                 </td>
@@ -160,7 +185,7 @@ const Employee = () => {
                 <Button variant="secondary" onClick={handleCloseEdit}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={() => { handleClose(); /* Add your logic to resend Gmail login for staff here */ }}>
+                <Button variant="primary" onClick={() => { handleCloseEdit();resend(emailResent)}}>
                     Resend
                 </Button>
             </Modal.Footer>
