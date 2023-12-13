@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const Verify = () => {
     const [response, setResponse] = useState(null);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -15,7 +16,7 @@ const Verify = () => {
 
     const handleChangeStatus = async (token) => {
         try {
-            const response = await axios.get(`http://localhost:5000/verify/${token}`);
+            const response = await axios.get(`http://localhost:5000/verify/${token}`).catch((err) => {console.log(err);});
             console.log(response.data);
             setResponse(response.data);
         } catch (error) {
