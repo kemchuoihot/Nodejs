@@ -4,15 +4,16 @@ const bodyParser = require("body-parser")
 const Phone = require('../models/Phone');
 
 router.use(bodyParser.urlencoded({ extended: true }));
-router.get('/', async (req, res) => {
-  try {
-    const phones = await Phone.find();
-    // console.log(phones);
-    res.status(200).json(phones);
-  } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
-  }
-});
+
+router.get('/', async(req, res) => {
+    try {
+      const androidPhones = await Phone.find({brand: 'Android'});
+      console.log(androidPhones);
+      res.status(200).json(androidPhones);
+    } catch(error) {
+      res.status(500).json({message: 'Server error'});
+    }
+  });
 
 router.post('/', async (req, res) => {
   try {

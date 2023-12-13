@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const accountRoutes = require('./controller/routes/account');
 const authRoutes = require('./controller/routes/auth');
 const homeRoutes = require('./controller/routes/home');
+const androidRoutes = require('./controller/routes/android');
 const verifyRoutes = require('./controller/routes/verify')
 
 const app = express();
@@ -18,11 +19,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-
 app.use(express.json()); // Sử dụng express.json thay vì body-parser
 
-// Mongoose
 const uri = "mongodb+srv://thinhpx33:thinhea33@pos.eofalwt.mongodb.net/?retryWrites=true&w=majority" 
 const connect = async () => {
   mongoose.connect(uri)
@@ -39,7 +37,7 @@ mongoose.connection.on("connected", () =>{
   console.log("MongoDB is connected");
 })
 
-app.use('/home', (req, res, next) => {
+app.use('/', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -47,13 +45,12 @@ app.use('/home', (req, res, next) => {
 });
 
 
-// app.use("/home", homeRoutes);x
 app.use("/account", accountRoutes);
 app.use("/auth", authRoutes);
-// require("./controller/routes/home")(app)
-app.use("/verify",verifyRoutes)
+app.use("/verify",verifyRoutes);
+app.use("/home",homeRoutes);
+app.use("/android",androidRoutes);
 
-//Routes
 
 app.use(cors());
 

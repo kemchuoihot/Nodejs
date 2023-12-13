@@ -1,44 +1,66 @@
-  import { Carousel } from 'react-bootstrap';
-  // import 'bootstrap/dist/css/bootstrap.min.css';
-  // import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
+  import 'bootstrap/dist/js/bootstrap.bundle.min.js';
   import '@popperjs/core/dist/umd/popper.min';
-  import './styles.module.css';
+  import styles from "./styles.module.css";
 
   import React, { useState, useEffect } from 'react';
   import axios from 'axios';
+  import { set } from 'mongoose';
 
   const Main = () => {
-    const [items, setItems] = useState([]);
+    const [iphoneItems, setIphoneItems] = useState([]);
     const [androidItems, setAndroidItems] = useState([]);
+
     const [selectedItem, setSelectedItem] = useState(null);
     const [showDetails, setShowDetails] = useState(false);
+
+    const [selectedBrand, setSelectedBrand] = useState('APPLE');
     
     useEffect(() => {
-      const fetchData = async () => {
+      const fetchIphoneData = async () => {
           try {
               const response = await axios.get('http://localhost:5000/home');
-              setItems(response.data);
+              setIphoneItems(response.data);
               console.log(response.data);
-              console.log(items);
           }
           catch (error) {
-              console.log('Error fetching data:', error);
+              console.log('Error fetching iPhone data:', error);
           }
       };
-      fetchData();
+      fetchIphoneData();
     }, []);
 
     useEffect(() => {
       const fetchAndroidData = async () => {
-        try {
-          const response = await axios.get('http://localhost:5000/android');
-          setAndroidItems(response.data);
-        } catch (error) {
-          console.log('Error fetching Android data:', error);
-        }
+          try {
+              const response = await axios.get('http://localhost:5000/android');
+              setAndroidItems(response.data);
+              console.log(response.data);
+          }
+          catch (error) {
+              console.log('Error fetching Android data:', error);
+          }
       };
-      fetchAndroidData();
-    }, []);
+      if(selectedBrand === 'ANDROID') {
+        fetchAndroidData();
+        console.log(selectedBrand);
+      }
+    }, [selectedBrand]);
+
+    const handleBrandClick = (brand) => {
+      setSelectedBrand(brand);
+    }
+
+    const handleIphoneItemClick = (item) => {
+      console.log('Item clicked:', item);
+      if (selectedItem && selectedItem._id === item._id) {
+        setSelectedItem(null);
+        setShowDetails(false);
+      } else {
+        setSelectedItem(item);
+        setShowDetails(true);
+      }
+    };
 
     const [orderItemsArray, setOrderItemsArray] = useState([]);
     const [orderPriceArray, setOrderPriceArray] = useState([]);
@@ -79,102 +101,77 @@
       }
       return "Price not available"; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
     };
-
-    const handleItemClick = (item) => {
-      console.log('Item clicked:', item);
-      if (selectedItem && selectedItem._id === item._id) {
-        setSelectedItem(null); // Nếu người dùng click vào sản phẩm đang được hiển thị, ẩn nó đi
-        setShowDetails(false);
-      } else {
-        setSelectedItem(item);
-        setShowDetails(true);
-      }
-    };
-
-    const handleAndroidItemClick = (item) => {
-      console.log('Item clicked:', item);
-      if (selectedItem && selectedItem._id === item._id) {
-        setSelectedItem(null); // Nếu người dùng click vào sản phẩm đang được hiển thị, ẩn nó đi
-        setShowDetails(false);
-      } else {
-        setSelectedItem(item);
-        setShowDetails(true);
-      }
-    };
     
     return (
       <div className="bg-dark h-100 p-3">
+        <div className="container">
         <div className="row mx-0 py-3 bg-light">
-          <div className="col-sm-8">
+          <div className="col-sm">
             <p>Order #88 <small className="text-muted">Today, 14 Nov 2023, 17:20 PM</small></p>
-            {/* Các thành phần tiếp theo của tab và grid cards */}
-            {/* ... */}
               <div className="card rounded-3 mb-3">
                   <div className="card-body">
                   <ul className="nav nav-pills" id="pills-tab" role="tablist">
                       <li className="nav-item" role="presentation">
-                      <button className="nav-link active rounded-pill" id="pills-iphone-tab" data-bs-toggle="pill" data-bs-target="#pills-iphone" type="button" role="tab" aria-controls="pills-iphone" aria-selected="true">IPHONE</button>
+                      <button className={`nav-link rounded-pill ${selectedBrand === 'APPLE' ? 'active' : ''}`} onClick={() => handleBrandClick('APPLE')}>APPLE</button>
                       </li>
                       <li className="nav-item" role="presentation">
-                      <button className="nav-link rounded-pill" id="pills-android-tab" data-bs-toggle="pill" data-bs-target="#pills-android" type="button" role="tab" aria-controls="pills-android" aria-selected="false">ANDROID</button>
+                      <button className={`nav-link rounded-pill ${selectedBrand === 'ANDROID' ? 'active' : ''}`} onClick={() => handleBrandClick('ANDROID')}>ANDROID</button>
                       </li>
                   </ul>
                   </div>
               </div>
 
-              <div className="tab-content" id="pills-tabContent">
+              <div className="col-sm">
+                <div className="tab-content" id="pills-tabContent">
                   <div className="tab-pane fade show active" id="pills-iphone" role="tabpanel" aria-labelledby="pills-iphone-tab">
-                      <div className="row row-cols-1 row-cols-md-4 g-4">
-                          {items.map(item => (
-                              <div className="col" key={item._id}>
-                                  <div className="card" style={{padding: '20px', width: '100%' }} onClick={() => handleItemClick(item)}>
-                                      <img draggable="false" src={item.photo[0]} className="card-img-top" alt="..." />
-                                      <div className="card-body">
-                                        <h5 className="card-title" style={{ fontFamily: 'Roboto', fontWeight: 'bold', fontSize: '1em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</h5>
-                                        <p className="card-text fw-bold iphone-price" style={{ color: 'red', fontSize: '0.8em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.price ? formatPrice(item.price) : "Price not available"}</p>
-                                          {selectedItem && selectedItem._id === item._id ? (
-                                            <>
-                                              <p className="card-text">Brand: {item.brand}</p>
-                                              <p className="card-text">Colors: {item.color}</p>
-                                              <p className="card-text">Description: {item.desc}</p>
-                                              <p className="card-text">Status: {item.status}</p>
-                                            </>
-                                          ) : null}
-                                      </div>
+                      {selectedBrand === 'APPLE' ? (
+                        iphoneItems.map(item => (
+                          <div className="col" key={item._id}>
+                              <div className="card" style={{marginBottom: '10px', padding: '20px'}} onClick={() => handleIphoneItemClick(item)}>
+                                  <img draggable="false" src={item.photo[0]} className="card-img-top" alt="..." />
+                                  <div className="card-body">
+                                    <h5 className="card-title" style={{ fontFamily: 'Roboto', fontWeight: 'bold', fontSize: '1em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</h5>
+                                    <p className="card-text fw-bold iphone-price" style={{ color: 'red', fontSize: '0.8em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.price ? formatPrice(item.price) : "Price not available"}</p>
+                                      {selectedItem && selectedItem._id === item._id ? (
+                                        <>
+                                          <p className="card-text">{item.color}</p>
+                                          <p className="card-text">{item.desc}</p>
+                                          <p className="card-text">{item.status}</p>
+                                        </>
+                                      ) : null}
                                   </div>
                               </div>
-                          ))}
-                      </div>
-                    </div>
+                          </div>
+                        ))
+                      ): null}
 
-                    <div className="tab-pane fade show active" id="pills-android" role="tabpanel" aria-labelledby="pills-android-tab">
-                      <div className="row row-cols-1 row-cols-md-4 g-4">
-                          {androidItems.map(item => (
-                              <div className="col" key={item._id}>
-                                  <div className="card" style={{padding: '20px', width: '100%' }} onClick={() => handleAndroidItemClick(item)}>
-                                      <img draggable="false" src={item.photo[0]} className="card-img-top" alt="..." />
-                                      <div className="card-body">
-                                        <h5 className="card-title" style={{ fontFamily: 'Roboto', fontWeight: 'bold', fontSize: '1em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.name}</h5>
-                                        <p className="card-text fw-bold iphone-price" style={{ color: 'red', fontSize: '0.8em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.price ? formatPrice(item.price) : "Price not available"}</p>
-                                          {selectedItem && selectedItem._id === item._id ? (
-                                            <>
-                                              <p className="card-text">Brand: {item.brand}</p>
-                                              <p className="card-text">Colors: {item.color}</p>
-                                              <p className="card-text">Description: {item.desc}</p>
-                                              <p className="card-text">Status: {item.status}</p>
-                                            </>
-                                          ) : null}
-                                      </div>
-                                  </div>
+                      {selectedBrand === 'ANDROID' ? (
+                        androidItems.map(item => (
+                          <div className="col" key={item._id}>
+                            {/* Hiển thị dữ liệu điện thoại Android */}
+                            <div className="card" style={{ padding: '20px', width: '100%' }}>
+                            <img draggable="false" src={item.photo[0]} className="card-img-top" alt="..." />
+                              <div className="card-body">
+                                <h5 className="card-title" style={{ fontFamily: 'Roboto', fontWeight: 'bold', fontSize: '1em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                  {item.name}
+                                </h5>
+                                <p className="card-text fw-bold iphone-price" style={{ color: 'red', fontSize: '0.8em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                  {item.price ? formatPrice(item.price) : "Price not available"}</p>
+                                <p className="card-text">{item.color}</p>
+                                <p className="card-text">{item.desc}</p>
+                                <p className="card-text">{item.status}</p>
                               </div>
-                          ))}
-                      </div>
-                    </div>
+                          </div>
+                          </div>
+                        ))
+                      ) : null}
+                  </div>
+                </div>
               </div>
           </div>
 
           {/* Order */}
-          <div className="col-sm-4">
+          <div className="col-sm">
             <div className="card">
               <div className="card-body">
                 <h5 className="d-flex justify-content-between align-items-center">
@@ -183,8 +180,6 @@
                 </h5>
                 <hr />
                 <ul id="orderlist" className="list-unstyled" style={{ height: '30vh', overflowY: 'auto' }}>
-                  {/* Định dạng danh sách đơn hàng */}
-                  {/* ... */}
                 </ul>
                 <hr />
                 <ul className="list-unstyled">
@@ -206,7 +201,8 @@
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
-  export default Main;
+export default Main;
