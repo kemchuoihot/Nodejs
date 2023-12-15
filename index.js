@@ -8,6 +8,7 @@ const authRoutes = require('./controller/routes/auth');
 const homeRoutes = require('./controller/routes/home');
 const androidRoutes = require('./controller/routes/android');
 const verifyRoutes = require('./controller/routes/verify')
+const productsRoutes = require('./controller/routes/product')
 
 const app = express();
 
@@ -50,7 +51,7 @@ app.use("/auth", authRoutes);
 app.use("/verify",verifyRoutes);
 app.use("/home",homeRoutes);
 app.use("/android",androidRoutes);
-
+app.use("/product",productsRoutes);
 
 app.use(cors());
 

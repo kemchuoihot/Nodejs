@@ -109,7 +109,7 @@ const Employee = () => {
                     {
                         employee.map((e, index) =>(
                             <tr key={index}>
-                                <th scope='row'>{index + 1}</th>
+                                <th scope='row' className='idNumber'>{index + 1}</th>
                                 <td>{e.name}</td>
                                 <td>{e.email}</td>
                                 <td>
