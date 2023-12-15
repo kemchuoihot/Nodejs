@@ -137,7 +137,7 @@ const Employee = () => {
                                         variant="outline-danger"
                                         disabled
                                     >
-                                        Block
+                                        Lock
                                         
                                     </Button>
                                  :
@@ -149,7 +149,7 @@ const Employee = () => {
                                             data-mdb-ripple-color="dark"
                                             onClick={() => { setStatus(e.status);setBlock(e.email); handleShow(); setBlockModal(e.name); }}
                                         >
-                                            {e.status === "active" ? "Block":"Unblock"}
+                                            {e.status === "active" ? "Lock":"Unlock"}
                                             
                                         </Button>
                                     }
@@ -165,13 +165,13 @@ const Employee = () => {
             <Modal.Header closeButton>
             <Modal.Title>Block employee</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Do you really want to block/unblock <em>{blockModal}</em>!?</Modal.Body>
+            <Modal.Body>Do you really want to lock/unlock <em>{blockModal}</em>!?</Modal.Body>
             <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
                 Close
             </Button>
             <Button variant={status === "block" ? "primary" : "danger"} onClick={() => { handleClose(); blockEmployee(); }}>
-                {status === "block" ? "UnBlock" : "Block"}
+                {status === "block" ? "Unlock" : "Lock"}
             </Button>
             </Modal.Footer>
         </Modal>
