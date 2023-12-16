@@ -8,7 +8,9 @@ const authRoutes = require('./controller/routes/auth');
 const homeRoutes = require('./controller/routes/home');
 const androidRoutes = require('./controller/routes/android');
 const customerRoutes = require('./controller/routes/customer');
-const verifyRoutes = require('./controller/routes/verify');
+const verifyRoutes = require('./controller/routes/verify')
+const productsRoutes = require('./controller/routes/product')
+const changePass = require('./controller/routes/changePass');
 
 const app = express();
 
@@ -53,6 +55,8 @@ app.use("/home",homeRoutes);
 app.use("/android",androidRoutes);
 app.use("/customer", customerRoutes);
 
+app.use("/product",productsRoutes);
+app.use("/changePass",changePass);
 
 app.use(cors());
 

@@ -35,8 +35,22 @@ const PhoneSchema = new mongoose.Schema({
   barcode:{
     type: String,
     required: true,
-    unique: true
+    unique: true,
+  },
+  
+  import:{
+    type: Number,
+    // required: true,
+    default: 0
   }
 })
+
+PhoneSchema.pre('save', function(next) {
+  const currentDate = new Date();
+
+  this.createdAt = currentDate;
+
+  next();
+});
 
 module.exports = mongoose.model('Phone', PhoneSchema, 'Phones');
