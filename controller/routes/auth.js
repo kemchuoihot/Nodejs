@@ -27,7 +27,7 @@ router.post('/',loginValidator,async (req,res) =>{
             res.json({loginStatus: true, token: token});
         }
     } catch (error) {
-        res.json({loginStatus: false});
+        // res.json({loginStatus: false});
         console.log(error.message)
         res.status(500).send({message:"Server Error"})
     }

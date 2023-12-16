@@ -31,6 +31,11 @@ const PhoneSchema = new mongoose.Schema({
       enum: ['available', 'unavailable']
     }],
     default: ['available']
+  },
+  barcode:{
+    type: String,
+    required: true,
+    unique: true
   }
 })
 
