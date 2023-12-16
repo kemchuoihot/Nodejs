@@ -23,10 +23,11 @@
 
     const handleShowModal = () => setShowModal(true);
 
-    const handleCloseModal = () => {
-      setSelectedItem(null);
-      setShowModal(false);
-      console.log("Modal closed");
+    const handleCloseModal = (id) => {
+      // setSelectedItem(null);
+      // setShowModal(false);
+      // console.log("Modal closed");
+      document.getElementById(id).style.display = 'none';
     }
 
     useEffect(() => {
@@ -185,12 +186,12 @@
                                     <h5 className="card-title name">{item.name}</h5>
                                     <p className="card-text price">{item.price ? formatPrice(item.price) : "Price not available"}</p>
                                     {selectedItem && selectedItem._id === item._id && (
-                                      <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                                      <div className="modal" id={item._id} tabIndex="-1" role="dialog" style={{ display: 'block' }}>
                                         <div className="modal-dialog" role="document">
                                           <div className="modal-content">
                                             <div className="modal-header">
                                               <h5 className="modal-title">{selectedItem.name}</h5>
-                                              <button type="button" className="btn-close" onClick={handleCloseModal}></button>
+                                              <button type="button" className="btn-close" onClick={()=>handleCloseModal(item._id)}></button>
 
                                             </div>
                                             <div className="modal-body">
