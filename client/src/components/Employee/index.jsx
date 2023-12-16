@@ -124,7 +124,7 @@ const Employee = () => {
                                         data-mdb-ripple-color="dark"
                                         onClick={() => { handleShowEdit(); setBlockModal(e.name); setEmailResent(e.email);}}
                                         >
-                                    Edit
+                                    Resend
                                 </Button>
                                 </td>
                                 <td>

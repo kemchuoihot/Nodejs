@@ -9,6 +9,7 @@ const homeRoutes = require('./controller/routes/home');
 const androidRoutes = require('./controller/routes/android');
 const verifyRoutes = require('./controller/routes/verify')
 const productsRoutes = require('./controller/routes/product')
+const changePass = require('./controller/routes/changePass');
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.use("/verify",verifyRoutes);
 app.use("/home",homeRoutes);
 app.use("/android",androidRoutes);
 app.use("/product",productsRoutes);
+app.use("/changePass",changePass);
 
 app.use(cors());
 

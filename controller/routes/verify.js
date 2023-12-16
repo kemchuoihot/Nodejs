@@ -19,7 +19,7 @@ router.get('/:token', async (req, res) => {
         user.status = 'active';
         await user.save();
 
-        res.json({ message: 'Account activated' });
+        res.json({ message: 'Account activated', username: user.username});
     } catch (error) {
         console.log(error);
         if (error instanceof jwt.JsonWebTokenError) {

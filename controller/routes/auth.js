@@ -12,14 +12,14 @@ router.post('/',loginValidator,async (req,res) =>{
     try {
         const account = await Account.findOne({username: req.body.username});
         if(!account){
-            res.json({loginStatus: false});
+            // res.json({loginStatus: false});
             return res.status(401).send({message:"Invalid email or password"});
         }
         const validPassword = await bcrypt.compare(
             req.body.password, account.password
         );
         if(!validPassword){
-            res.json({loginStatus: false});
+            // res.json({loginStatus: false});
             return res.status(401).send({message:"Invalid email or password"});
         }
         else{
