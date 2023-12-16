@@ -12,6 +12,7 @@ const Product = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [deleteValue, setDeleteValue] = useState("");
+    const [items, setItems] = useState({});
 
     useEffect(() => { 
         fetchData();
@@ -26,6 +27,7 @@ const Product = () => {
                 alert(result.data.Error);
             }
         }).catch(error =>{ console.log(error)});
+        localStorage.removeItem('item');
     };
 
     const deleteProduct = () => {
@@ -41,6 +43,7 @@ const Product = () => {
         }
         ).catch(error =>{ console.log(error)});
     };
+
     // const handleRefresh = () => {
     //     setLoading(true);
     //     fetchData();
@@ -57,6 +60,9 @@ const Product = () => {
                 <h1 className='title'>Product List</h1>
             </div>
             <div className="d-flex justify-content-between">
+                <Link to="/dashboard/add_product" className="btn btn-info btn-add">
+                    Add Product
+                </Link>
                 {/* <Link to="/dashboard/add_employee" className="btn btn-info btn-add">
                     Add Employee
                 </Link>
@@ -79,6 +85,7 @@ const Product = () => {
                             <th scope='col'>Brand</th>
                             <th scope='col'>Color</th>
                             <th scope='col'>Price (VNĐ)</th>
+                            <th scope='col'>Import Price (VNĐ)</th>
                             <th scope='col'>Action</th>
                             
                         </tr>
@@ -99,15 +106,15 @@ const Product = () => {
                                 <td>{e.brand}</td>
                                 <td>{e.color}</td>
                                 <td>{e.price}</td>
+                                <td>{e.import}</td>
                                 
                                 <td>
                                     <Button 
                                         type="button"
                                         className ="btn btn-outline-secondary btn-rounded btn-green btn-sm mr-2"
                                         data-mdb-ripple-color="dark"
-                                        // onClick={() => { handleShow(); }}
                                         >
-                                    Edit
+                                    <Link to="/dashboard/edit_product" className='text-white' onClick={() =>localStorage.setItem('item', JSON.stringify(e))}>Edit</Link>
                                     </Button>
                                     <Button 
                                         type="button"

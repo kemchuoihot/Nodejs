@@ -69,6 +69,7 @@ const toggle = () => setIsOpen(!isOpen);
               </li>
               <li className="w-100 p-2">
                 <Link
+                // onClick={localStorage.removeItem('product')}
                   to="/dashboard/product"
                   className="nav-link px-0 align-middle text-white"
                 >
