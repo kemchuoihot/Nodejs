@@ -88,7 +88,8 @@ const Product = () => {
                             <th scope='col'>Brand</th>
                             <th scope='col'>Color</th>
                             <th scope='col'>Price (VNĐ)</th>
-                            <th scope='col'>Import Price (VNĐ)</th>
+                            
+                            {role === 'admin' && (<th scope='col'>Import Price (VNĐ)</th>)}
                             {role == 'admin' && (<th scope='col'>Action</th>)}
                             
                         </tr>
@@ -109,7 +110,7 @@ const Product = () => {
                                 <td>{e.brand}</td>
                                 <td>{e.color}</td>
                                 <td>{e.price}đ</td>
-                                <td>{e.import}đ</td>
+                                {role == 'admin' && (<td>{e.import}đ</td>)}
                                 
                                 {role == 'admin' && (<td>
                                     <Button 
@@ -128,7 +129,6 @@ const Product = () => {
                                     Delete
                                     </Button>
                                 </td>)}
-                                
                                 
                             </tr>
                         ))
