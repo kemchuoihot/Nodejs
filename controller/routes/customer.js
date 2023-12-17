@@ -5,6 +5,16 @@ const Customer = require('../models/Customer');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
+router.get('/', async (req, res) => {
+    try {
+        const customer = await Customer.find();
+        res.json({Status: true, customer});
+        console.log(customer);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+});
 router.post('/checkout', async (req, res) => {
     const { phoneNumber } = req.body;
 

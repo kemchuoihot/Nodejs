@@ -92,6 +92,15 @@ const toggle = () => setIsOpen(!isOpen);
               </li>
               <li className="w-100 p-2">
                 <Link
+                  to="/dashboard/customer"
+                  className="nav-link px-0 align-middle text-white"
+                >
+                  <i className="tog fs-4 bi-people mr-2"></i>
+                  <span className="ms-2" style={{display: isOpen ? "inline" : "none"}}>Customer</span>
+                </Link>
+              </li>
+              <li className="w-100 p-2">
+                <Link
                   to="/dashboard/profile"
                   className="nav-link px-0 align-middle text-white"
                 >
