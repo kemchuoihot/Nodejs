@@ -102,7 +102,7 @@ const Employee = () => {
                             <th scope='col'>Email</th>
                             <th scope='col'>Status</th>
                             <th scope='col'>Action</th>
-                            <th scope='col'>Block</th>
+                            <th scope='col'>Lock</th>
                         </tr>
                     </thead>
                     <tbody>
