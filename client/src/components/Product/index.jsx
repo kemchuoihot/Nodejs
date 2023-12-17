@@ -86,6 +86,7 @@ const Product = () => {
                             <th>ID</th>
                             <th scope='col'>Name</th>
                             <th scope='col'>Brand</th>
+                            <th scope='col'>Barcode</th>
                             <th scope='col'>Color</th>
                             <th scope='col'>Price (VNĐ)</th>
                             
@@ -108,6 +109,7 @@ const Product = () => {
                                 />
                                 {e.name}</td>
                                 <td>{e.brand}</td>
+                                <td>{e.barcode}</td>
                                 <td>{e.color}</td>
                                 <td>{e.price}đ</td>
                                 {role == 'admin' && (<td>{e.import}đ</td>)}
