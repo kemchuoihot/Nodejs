@@ -30,7 +30,7 @@ const [role, setRole] = React.useState("");
 useEffect(() =>
 {
   const account = JSON.parse(localStorage.getItem("account"));
-  if(!account || account.status === "inactive"){
+  if(!account || account.status === "inactive" || account.status === "block"){
     handleLogout();
   }
   setName(account.name);

@@ -35,7 +35,7 @@ const Signup = () => {
                 console.log(result);
                 const res = result.data;
                 if(res.loginStatus){
-                    if(res.account.status === 'inactive'){
+                    if(res.account.status === 'inactive' || res.account.status === 'block'){
                         setError("Your account is inactive. Please contact to admin.");
                         setLoading(false);
                         return;
