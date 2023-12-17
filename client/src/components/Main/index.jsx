@@ -487,6 +487,7 @@ const searchProductByBarcode = async () => {
                                 setFullName(e.target.value);
                                 setFullNameError(false);
                               }}
+                              placeholder='Full Name'
                             />
                             {fullNameError && <div className="invalid-feedback">Please enter full name</div>}
 
@@ -500,6 +501,7 @@ const searchProductByBarcode = async () => {
                                 setAddress(e.target.value);
                                 setAddressError(false);
                               }}
+                              placeholder='Address'
                             />
                             {addressError && <div className="invalid-feedback">Please enter address</div>}
                           </div>
