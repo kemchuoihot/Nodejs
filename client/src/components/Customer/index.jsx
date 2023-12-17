@@ -8,7 +8,7 @@ const Customer = () => {
     },[]);
 
     const fetchData = () => {
-        axios.get('http://localhost:5000/customer')
+        axios.get('/customer')
         .then(result =>{
             if(result.data.Status){
                 setCustomer(result.data.customer);

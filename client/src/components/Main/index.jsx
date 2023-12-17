@@ -34,7 +34,7 @@ const Main = () => {
   useEffect(() => {
     const fetchIphoneData = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/home');
+            const response = await axios.get('/home');
             setIphoneItems(response.data.filter(item => item.brand === 'Apple'));
             console.log(response.data);
         }
@@ -48,7 +48,7 @@ const Main = () => {
   useEffect(() => {
     const fetchAndroidData = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/android');
+            const response = await axios.get('/android');
             setAndroidItems(response.data.filter(item => item.brand === 'Android'));
             console.log(response.data);
         }
@@ -129,7 +129,7 @@ const handleCheckout = async () => {
   setShowModalCheckout(true);
 
   try {
-    const response = await axios.post('http://localhost:5000/customer/checkout', { phoneNumber });
+    const response = await axios.post('/customer/checkout', { phoneNumber });
     const { success, customer, message: msg } = response.data;
 
     if (success) {
@@ -147,7 +147,7 @@ const handleCheckout = async () => {
 
 const handleConfirmPhoneNumber = async () => {
   try {
-    const response = await axios.post('http://localhost:5000/customer/checkout', { phoneNumber });
+    const response = await axios.post('/customer/checkout', { phoneNumber });
     console.log('Response:', response);
     console.log('Response data:', response.data);
     const { success, customer, message: msg } = response.data;
@@ -206,7 +206,7 @@ const handleCreateAccount = async (e) => {
   }
 
   try {
-    const response = await axios.post('http://localhost:5000/customer/create', {
+    const response = await axios.post('/customer/create', {
       fullName,
       address,
       phoneNumber: phoneNumber.trim(),
@@ -239,7 +239,7 @@ const handleCreateAccount = async (e) => {
 const searchProductByBarcode = async () => {
   if (selectedBrand === 'APPLE') {
     try {
-      const response = await axios.get(`http://localhost:5000/home/barcode/${barcode}`);
+      const response = await axios.get(`/home/barcode/${barcode}`);
       setProduct(response.data);
       setError('');
     } catch (error) {
@@ -248,7 +248,7 @@ const searchProductByBarcode = async () => {
     }
   } else if (selectedBrand === 'ANDROID') {
     try {
-      const response = await axios.get(`http://localhost:5000/android/barcode/${barcode}`);
+      const response = await axios.get(`/android/barcode/${barcode}`);
       setProduct(response.data);
       setError('');
     } catch (error) {

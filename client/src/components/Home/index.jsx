@@ -1,6 +1,10 @@
+import { Link, Outlet, useNavigate } from "react-router-dom";
+
+
 const Home = () => {
+    const navigate = useNavigate();
     return (
-        <h1>Home</h1>
+        <button onClick={() => navigate('/main')}>Go to Main</button>
     )
 };
 
