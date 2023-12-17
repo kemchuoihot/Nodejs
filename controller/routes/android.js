@@ -43,6 +43,6 @@ router.get('/barcode/:barcode', async (req, res) => {
     res.status(500).json({ message: 'Lỗi khi tìm kiếm sản phẩm.' });
   }
 });
-
+//// jhfjdhfjdhfjhdjfhdjfhdjf
 
 module.exports = router;
