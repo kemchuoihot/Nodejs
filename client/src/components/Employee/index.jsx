@@ -110,7 +110,7 @@ const Employee = () => {
                         employee.map((e, index) =>(
                             <tr key={index}>
                                 <th scope='row' className='idNumber'>{index + 1}</th>
-                                <td>{e.name}</td>
+                                <td>{e.name == 'admin'? <strong>{e.name}</strong> : e.name}</td>
                                 <td>{e.email}</td>
                                 <td>
                                     {e.status === "inactive" && <span className="badge badge-primary rounded-pill d-inline">Inactive</span>}
@@ -128,7 +128,7 @@ const Employee = () => {
                                 </Button>
                                 </td>
                                 <td>
-                                    {e.status === "inactive" ? 
+                                    {e.status === "inactive" || e.role ==="admin" ? 
                                     <Button 
                                         type="button"
                                         className = ""

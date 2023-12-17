@@ -3,6 +3,8 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
 import "./styles.css";
+import { useState, useEffect } from 'react';
+
 
 
 const Dashboard = () => {
@@ -18,10 +20,22 @@ const Dashboard = () => {
     // })
     localStorage.removeItem("token");
         window.location.replace("/login");
-    
+    localStorage.removeItem("account");
   }
 
 const [isOpen,setIsOpen] = React.useState(false)
+const [name, setName] = React.useState("");
+const [role, setRole] = React.useState("");
+
+useEffect(() =>
+{
+  const account = JSON.parse(localStorage.getItem("account"));
+  if(!account || account.status === "inactive"){
+    handleLogout();
+  }
+  setName(account.name);
+  setRole(account.role);
+},[])
 const toggle = () => setIsOpen(!isOpen);
 
   return (
@@ -56,7 +70,7 @@ const toggle = () => setIsOpen(!isOpen);
                   <span className="mask  ms-2" style={{display: isOpen ? "inline" : "none"}}>Dashboard</span>
                 </Link>
               </li>
-              <li className="w-100 p-2">
+              {role == "admin" && (<li className="w-100 p-2">
                 <Link
                   to="/dashboard/employee"
                   className="nav-link px-0 align-middle text-white"
@@ -66,10 +80,9 @@ const toggle = () => setIsOpen(!isOpen);
                     Manage Employees
                   </span>
                 </Link>
-              </li>
+              </li>)}
               <li className="w-100 p-2">
                 <Link
-                // onClick={localStorage.removeItem('product')}
                   to="/dashboard/product"
                   className="nav-link px-0 align-middle text-white"
                 >
@@ -103,7 +116,7 @@ const toggle = () => setIsOpen(!isOpen);
             <div className="p-2 d-flex shadow">
                 <h4 className="pt-2 title"></h4>
                 <span className="d-flex ml-auto">
-                  <span className="user-name">Phuc Thinh</span>
+                  <span className="user-name">Xin chao {name}</span>
                   <img src="https://fullstack.edu.vn/static/media/fallback-avatar.155cdb2376c5d99ea151.jpg" alt="users" className="avt"/>
                 </span>
             </div>

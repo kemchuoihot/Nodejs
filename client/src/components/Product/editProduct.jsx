@@ -109,7 +109,7 @@ const editProduct = () =>{
                         stroke="2.5"
                         speed="1" 
                         color="#007bff" 
-                        ></l-waveform>) :<button className="btn btn-info w-100 mt-2" type='submit'>Add</button>}
+                        ></l-waveform>) :<button className="btn btn-info w-100 mt-2" type='submit'>Update</button>}
                         
                     </div>
                 </form>

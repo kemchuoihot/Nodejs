@@ -13,12 +13,15 @@ const Product = () => {
     const handleShow = () => setShow(true);
     const [deleteValue, setDeleteValue] = useState("");
     const [items, setItems] = useState({});
+    const [role, setRole] = useState("");
 
     useEffect(() => { 
         fetchData();
     },[]);
 
     const fetchData = () => {
+        const account = JSON.parse(localStorage.getItem("account"));
+        setRole(account.role);
         axios.get('http://localhost:5000/product')
         .then(result =>{
             if(result.data.Status){
@@ -86,7 +89,7 @@ const Product = () => {
                             <th scope='col'>Color</th>
                             <th scope='col'>Price (VNĐ)</th>
                             <th scope='col'>Import Price (VNĐ)</th>
-                            <th scope='col'>Action</th>
+                            {role == 'admin' && (<th scope='col'>Action</th>)}
                             
                         </tr>
                     </thead>
@@ -105,10 +108,10 @@ const Product = () => {
                                 {e.name}</td>
                                 <td>{e.brand}</td>
                                 <td>{e.color}</td>
-                                <td>{e.price}</td>
-                                <td>{e.import}</td>
+                                <td>{e.price}đ</td>
+                                <td>{e.import}đ</td>
                                 
-                                <td>
+                                {role == 'admin' && (<td>
                                     <Button 
                                         type="button"
                                         className ="btn btn-outline-secondary btn-rounded btn-green btn-sm mr-2"
@@ -124,7 +127,8 @@ const Product = () => {
                                         >
                                     Delete
                                     </Button>
-                                </td>
+                                </td>)}
+                                
                                 
                             </tr>
                         ))
