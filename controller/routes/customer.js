@@ -1,51 +1,54 @@
 const express = require('express');
 const router = express.Router();
-const bodyParser = require("body-parser")
-const Phone = require('../models/Phone');
+const bodyParser = require("body-parser");
 const Customer = require('../models/Customer');
 
-router.post('/check-phone', async (req, res) => {
-    try {
-      const { phone_number } = req.body;
-  
-      // Kiểm tra xem số điện thoại đã tồn tại trong cơ sở dữ liệu hay chưa
-      const existingCustomer = await Customer.findOne({ phone_number });
-  
-      if (existingCustomer) {
-        // Nếu số điện thoại đã tồn tại, trả về thông tin của khách hàng
-        return res.status(200).json({ customer: existingCustomer });
-      } else {
-        // Nếu số điện thoại chưa tồn tại, trả về thông báo lỗi
-        return res.status(404).json({ message: 'Customer not found' });
-      }
-    } catch (error) {
-      res.status(500).json({ message: 'Server Error' });
-    }
-  });
+router.use(bodyParser.urlencoded({ extended: true }));
 
-// Route handling for creating a new customer account
-router.post('/create-account', async (req, res) => {
+router.post('/checkout', async (req, res) => {
+    const { phoneNumber } = req.body;
+
     try {
-      const { fullname, address, phone_number } = req.body;
-  
-      // Check if the phone number already exists in the database
-      const existingCustomer = await Customer.findOne({ phone_number });
-  
-      if (existingCustomer) {
-        // If the phone number already exists, return a message indicating the account exists
-        return res.status(409).json({ message: 'Account already exists for this phone number' });
-      } else {
-        // If the phone number doesn't exist, create a new customer account
-        const newCustomer = new Customer({ fullname, address, phone_number });
-        await newCustomer.save();
-  
-        // Return the newly created customer account information
-        return res.status(201).json({ customer: newCustomer });
-      }
-    } catch (error) {
-      res.status(500).json({ message: 'Server Error' });
+        const customer = await Customer.findOne({ phone_number: phoneNumber });
+
+        if (customer) {
+            res.json({ success: true, customer });
+        } else {
+            res.json({ success: false, message: 'Không tìm thấy thông tin khách hàng. Vui lòng nhập thông tin mới.' });
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Lỗi trong quá trình xử lý.' });
     }
-  });
-  
+});
+
+router.post('/create', async (req, res) => {
+    const { fullName, address, phoneNumber } = req.body;
+
+    try {
+        const existingCustomer = await Customer.findOne({ phone_number: phoneNumber });
+
+        if (existingCustomer) {
+            return res.status(400).json({ success: false, message: 'Số điện thoại đã tồn tại trong hệ thống.' });
+        }
+
+        const newCustomer = new Customer({
+            fullname: fullName,
+            address: address,
+            phone_number: phoneNumber, // Chắc chắn rằng phoneNumber được cung cấp
+        });
+
+        const savedCustomer = await newCustomer.save();
+
+        if (savedCustomer) {
+            res.json({ success: true, message: 'Tạo tài khoản thành công.' });
+        } else {
+            res.status(500).json({ success: false, message: 'Không thể tạo tài khoản mới.' });
+        }
+    } catch (error) {
+        console.error('Error during account creation:', error); // Log error object để xem chi tiết lỗi
+        res.status(500).json({ success: false, message: 'Lỗi trong quá trình xử lý.' });
+    }
+});
+
 
 module.exports = router;

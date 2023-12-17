@@ -1,164 +1,289 @@
+import React, { useState, useEffect } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import './main.css';
 
-  import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-  import '@popperjs/core/dist/umd/popper.min';
-  import './main.css';
-  import React, { useState, useEffect } from 'react';
-  import axios from 'axios';
+const Main = () => {
+  const [iphoneItems, setIphoneItems] = useState([]);
+  const [androidItems, setAndroidItems] = useState([]);
 
-  const Main = () => {
-    const [iphoneItems, setIphoneItems] = useState([]);
-    const [androidItems, setAndroidItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedBrand, setSelectBrand] = useState('APPLE');
 
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [selectedBrand, setSelectBrand] = useState('APPLE');
+  const [showModal, setShowModal] = useState(false);
+  const [selectedModalItem, setSelectedModalItem] = useState(null);
 
-    const [showModal, setShowModal] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [customerInfo, setCustomerInfo] = useState(null);
+  const [showModalCheckout, setShowModalCheckout] = useState(false);
+  const [message, setMessage] = useState('');
 
-    const [showPhoneModal, setShowPhoneModal] = useState(false);
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [fullname, setFullname] = useState('');
-    const [address, setAddress] = useState('');
-    const [customerInfo, setCustomerInfo] = useState(null);
-    const[showNewCustomerForm, setShowNewCustomerForm] = useState(false);
+  const [showCreateAccountModal, setShowCreateAccountModal] = useState(false);
+  const [fullName, setFullName] = useState('');
+  const [address, setAddress] = useState('');
 
-    const handleShowModal = () => setShowModal(true);
+  const [phoneNumberError, setPhoneNumberError] = useState(false);
+  const [fullNameError, setFullNameError] = useState(false);
+  const [addressError, setAddressError] = useState(false);
 
-    const handleCloseModal = () => {
-      setSelectedItem(null);
-      setShowModal(false);
-      console.log("Modal closed");
-    }
+  const [barcode, setBarcode] = useState('');
+  const [product, setProduct] = useState(null);
+  const [error, setError] = useState('');
 
-    useEffect(() => {
-      const fetchIphoneData = async () => {
-          try {
-              const response = await axios.get('http://localhost:5000/home');
-              setIphoneItems(response.data.filter(item => item.brand === 'Apple'));
-              console.log(response.data);
-          }
-          catch (error) {
-              console.log('Error fetching iPhone data:', error);
-          }
-      };
-      fetchIphoneData();
-    }, []);
 
-    useEffect(() => {
-      const fetchAndroidData = async () => {
-          try {
-              const response = await axios.get('http://localhost:5000/android');
-              setAndroidItems(response.data.filter(item => item.brand === 'Android'));
-              console.log(response.data);
-          }
-          catch (error) {
-              console.log('Error fetching Android data:', error);
-          }
-      };
-      if(selectedBrand === 'ANDROID') {
-        fetchAndroidData();
-      }
-    }, [selectedBrand])
 
-    const handleBrandClick = (brand) => {
-      setSelectBrand(brand);
-      console.log(brand)
-    }
-
-    const handleItemClick = (item) => {
-      setSelectedItem(item);
-      handleShowModal(true);
+  useEffect(() => {
+    const fetchIphoneData = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/home');
+            setIphoneItems(response.data.filter(item => item.brand === 'Apple'));
+            console.log(response.data);
+        }
+        catch (error) {
+            console.log('Error fetching iPhone data:', error);
+        }
     };
+    fetchIphoneData();
+  }, []);
 
-    const addToCart = (item) => {
-      const newItem = {
-        id: item._id,
-        name: item.name,
-        price: item.price,
-        image: item.photo[0]
-      };
-    
-    const updatedOrderArray = [...orderArray, newItem];
-      setOrderArray(updatedOrderArray);
-      handleCloseModal();
-  };
-
-  const [orderArray, setOrderArray] = useState([]);
-  const orderTotalItems = () => orderArray.length;
-    
-  const orderTotalCost = () => orderArray.reduce((total, item) => {
-    return total + (item.price || 0);
-  }, 0).toFixed(2);
-    
-  const orderBasketClear = () => {
-    setOrderArray([]);
-  };
-
-  const formatPrice = (price) => {
-    if (typeof price === 'number') {
-      return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }).replace(/\D00(?=\D*$)/, '');
+  useEffect(() => {
+    const fetchAndroidData = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/android');
+            setAndroidItems(response.data.filter(item => item.brand === 'Android'));
+            console.log(response.data);
+        }
+        catch (error) {
+            console.log('Error fetching Android data:', error);
+        }
+    };
+    if(selectedBrand === 'ANDROID') {
+      fetchAndroidData();
     }
-    return "Price not available"; // Hoặc giá trị mặc định khác tùy vào yêu cầu của bạn
-  };
+  }, [selectedBrand])
 
+  useEffect(() => {
+    const handleCloseModalOutside = (event) => {
+      if (showModal && event.target.className === 'modal') {
+        handleCloseModal();
+      }
+    };
+  
+    window.addEventListener('click', handleCloseModalOutside);
+  
+    return () => {
+      window.removeEventListener('click', handleCloseModalOutside);
+    };
+  }, [showModal]);
 
- /* Xử lí CHECKOUT */
-  const handleCheckout = () => {
-    setShowPhoneModal(true);
+  const handleBrandClick = (brand) => {
+    setSelectBrand(brand);
   }
 
-  const handlePhoneInputChange = (event) => {
-    setPhoneNumber(event.target.value);
-  };
-
-  const handleFullNameChange = (event) => {
-    setFullname(event.target.value);
-  };
-
-  const handleAddressChange = (event) => {
-    setAddress(event.target.value);
-  };
-
-  const handlePhoneSubmit = async() => {
-    try {
-      const response = await axios.post('http://localhost:5000/check-phone', {phone_number: phoneNumber});
-      const { customer } = response.data;
-
-      if(customer) {
-        setCustomerInfo(customer);
-      }
-      else {
-        setShowPhoneModal(false);
-        setShowNewCustomerForm(true);
-      }
-    } catch (error) {
-      console.log('Error checking phone number:', error);
+  const handleShowModal = () => setShowModal(true);
+  
+  const handleCloseModal = () => {
+    if (!selectedModalItem) {
+      setShowModal(false);
+    } else {
+      setSelectedModalItem(null);
     }
   };
 
-  const handleCreateAccount = async () => {
-    try {
-      const response = await axios.post('http://localhost:5000/create-account', {
-        phone_number: phoneNumber,
-        fullname: fullname,
-        address: address,
-      });
-      const { customer } = response.data;
-
-      if (customer) {
-        setCustomerInfo(customer);
-        setShowNewCustomerForm(false);
-        // Hiển thị thông tin của khách hàng sau khi tạo tài khoản thành công
-      }
-    } catch (error) {
-      console.error('Error creating account:', error);
-    }
+  const handleItemClick = (item) => {
+    setSelectedModalItem(item);
+    setShowModal(true);
   };
-    
+
+const addToCart = (item) => {
+  const newItem = {
+      id: item._id,
+      name: item.name,
+      price: item.price,
+      image: item.photo[0]
+  };
+  
+const updatedOrderArray = [...orderArray, newItem];
+    setOrderArray(updatedOrderArray);
+    handleCloseModal();
+};
+
+const [orderArray, setOrderArray] = useState([]);
+const orderTotalItems = () => orderArray.length;
+  
+const orderTotalCost = () => orderArray.reduce((total, item) => {
+  return total + (item.price || 0);
+}, 0).toFixed(2);
+  
+const orderBasketClear = () => {
+  setOrderArray([]);
+};
+
+const formatPrice = (price) => {
+  if (typeof price === 'number') {
+    return price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }).replace(/\D00(?=\D*$)/, '');
+  }
+  return "Price not available";
+};
+
+const handleCheckout = async () => {
+  setShowModalCheckout(true);
+
+  try {
+    const response = await axios.post('http://localhost:5000/customer/checkout', { phoneNumber });
+    const { success, customer, message: msg } = response.data;
+
+    if (success) {
+      setCustomerInfo(customer);
+      setMessage('');
+      setShowModalCheckout(true);
+    } else {
+      setCustomerInfo(null);
+      setMessage(msg);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+const handleConfirmPhoneNumber = async () => {
+  try {
+    const response = await axios.post('http://localhost:5000/customer/checkout', { phoneNumber });
+    console.log('Response:', response);
+    console.log('Response data:', response.data);
+    const { success, customer, message: msg } = response.data;
+
+    if (success) {
+      setCustomerInfo(customer);
+      setMessage('');
+      setShowModalCheckout(true);
+    } else {
+      setCustomerInfo(null);
+      setMessage(msg);
+
+      if (!customer) {
+        setShowCreateAccountModal(true);
+      } else {
+        setShowCreateAccountModal(false);
+      }
+    }
+    console.log('Customer Info:', customer);
+    console.log('Message:', msg);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
+
+
+const renderCustomerInfo = () => {
+  if (customerInfo) {
+    return (
+      <div className="customer-info">
+        <h3>Customer Information</h3>
+        <p><strong>Name:</strong> {customerInfo.fullname}</p>
+        <p><strong>Address:</strong> {customerInfo.address}</p>
+        <p><strong>Phone Number:</strong> {customerInfo.phone_number}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+const handleCreateAccount = async (e) => {
+  e.preventDefault();
+
+  if (!phoneNumber.trim()) {
+    setPhoneNumberError(true);
+    return;
+  }
+  if (!fullName.trim()) {
+    setFullNameError(true);
+    return;
+  }
+  if (!address.trim()) {
+    setAddressError(true);
+    return;
+  }
+
+  try {
+    const response = await axios.post('http://localhost:5000/customer/create', {
+      fullName,
+      address,
+      phoneNumber: phoneNumber.trim(),
+    });
+
+    if (response.status === 200) {
+      const { success, customer, message: msg } = response.data || {};
+
+      if (success) {
+        setCustomerInfo(customer);
+        setMessage('');
+        setShowCreateAccountModal(false);
+        setShowModalCheckout(true);
+      } else {
+        setCustomerInfo(null);
+        setMessage(msg);
+      }
+
+      setFullName('');
+      setAddress('');
+      setPhoneNumber('');
+    } else {
+      console.error('Request failed with status:', response.status);
+    }
+  } catch (error) {
+    console.error('Error:', error.response ? error.response.data : error.message);
+  }
+};
+
+const searchProductByBarcode = async () => {
+  if (selectedBrand === 'APPLE') {
+    try {
+      const response = await axios.get(`http://localhost:5000/home/barcode/${barcode}`);
+      setProduct(response.data);
+      setError('');
+    } catch (error) {
+      setError('Không tìm thấy sản phẩm');
+      setProduct(null);
+    }
+  } else if (selectedBrand === 'ANDROID') {
+    try {
+      const response = await axios.get(`http://localhost:5000/android/barcode/${barcode}`);
+      setProduct(response.data);
+      setError('');
+    } catch (error) {
+      setError('Không tìm thấy sản phẩm');
+      setProduct(null);
+    }
+  }
+};
+
+
     return (
       <div className="bg-dark h-100 p-3">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-md-7 bg-white"> {}
+            <div className="col-md-7 bg-white">
+              {/* Phần tìm kiếm sản phẩm */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Nhập mã vạch sản phẩm"
+                  value={barcode}
+                  onChange={(e) => setBarcode(e.target.value)}
+                />
+                <button onClick={searchProductByBarcode}>Tìm kiếm</button>
+                {error && <p>{error}</p>}
+                {product && (
+                  <div>
+                    <h2>{product.name}</h2>
+                    <p>{product.desc}</p>
+                    {/* Hiển thị thông tin sản phẩm cần thiết tại đây */}
+                  </div>
+                )}
+              </div>
               <p>Order #88 <small className="text-muted">Today, 14 Nov 2023, 17:20 PM</small></p>
                 <div className="card rounded-3 mb-3">
                     <div className="card-body">
@@ -184,23 +309,23 @@
                                   <div className="card-body">
                                     <h5 className="card-title name">{item.name}</h5>
                                     <p className="card-text price">{item.price ? formatPrice(item.price) : "Price not available"}</p>
-                                    {selectedItem && selectedItem._id === item._id && (
-                                      <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+                                    {selectedModalItem  && selectedModalItem._id === item._id && (
+                                        <div className="modal" id={item._id} tabIndex="-1" role="dialog" style={{ display: showModal ? 'block' : 'none' }}>
                                         <div className="modal-dialog" role="document">
                                           <div className="modal-content">
                                             <div className="modal-header">
-                                              <h5 className="modal-title">{selectedItem.name}</h5>
+                                              <h5 className="modal-title">{selectedModalItem.name}</h5>
                                               <button type="button" className="btn-close" onClick={handleCloseModal}></button>
 
                                             </div>
                                             <div className="modal-body">
-                                              <img src={selectedItem.photo[0]} alt={selectedItem.name} className="img-fluid" />
-                                              <p>{selectedItem.desc}</p>
-                                              <p>Status: {selectedItem.status}</p>
-                                              <p>Price: {selectedItem.price ? formatPrice(selectedItem.price) : "Price not available"}</p>
+                                              <img src={selectedModalItem.photo[0]} alt={selectedModalItem.name} className="img-fluid" />
+                                              <p>{selectedModalItem.desc}</p>
+                                              <p>Status: {selectedModalItem.status}</p>
+                                              <p>Price: {selectedModalItem.price ? formatPrice(selectedModalItem.price) : "Price not available"}</p>
                                             </div>
                                             <div className="modal-footer">
-                                              <button type="button" className="btn btn-primary" onClick={() => addToCart(selectedItem)}>Add to Cart</button>
+                                              <button type="button" className="btn btn-primary" onClick={() => addToCart(selectedModalItem)}>Add to Cart</button>
                                             </div>
                                           </div>
                                         </div>
@@ -219,27 +344,27 @@
                                   <div className="card-body">
                                     <h5 className="card-title name">{item.name}</h5>
                                     <p className="card-text price">{item.price ? formatPrice(item.price) : "Price not available"}</p>
-                                    {selectedItem && selectedItem._id === item._id && (
-                                      <div className="modal" tabIndex="-1" role="dialog">
-                                        <div className="modal-dialog" role="document">
-                                          <div className="modal-content">
-                                            <div className="modal-header">
-                                              <h5 className="modal-title">{selectedItem.name}</h5>
-                                              <button type="button" className="btn-close"></button>
-                                            </div>
-                                            <div className="modal-body">
-                                              {/* Hiển thị thông tin chi tiết sản phẩm */}
-                                              <img src={selectedItem.photo[0]} alt={selectedItem.name} className="img-fluid" />
-                                              <p>{selectedItem.desc}</p>
-                                              <p>Status: {selectedItem.status}</p>
-                                              <p>Price: {selectedItem.price ? formatPrice(selectedItem.price) : "Price not available"}</p>
-                                            </div>
-                                            <div className="modal-footer">
-                                              <button type="button" className="btn btn-primary" onClick={() => addToCart(selectedItem)}>Add to Cart</button>
-                                            </div>
+                                    {selectedModalItem && selectedModalItem._id === item._id && (
+                                      <div className="modal" id={item._id} tabIndex="-1" role="dialog" style={{ display: showModal ? 'block' : 'none' }}>
+                                      <div className="modal-dialog" role="document">
+                                        <div className="modal-content">
+                                          <div className="modal-header">
+                                            <h5 className="modal-title">{selectedModalItem.name}</h5>
+                                            <button type="button" className="btn-close" onClick={() => handleCloseModal()}></button>
+
+                                          </div>
+                                          <div className="modal-body">
+                                            <img src={selectedModalItem.photo[0]} alt={selectedModalItem.name} className="img-fluid" />
+                                            <p>{selectedModalItem.desc}</p>
+                                            <p>Status: {selectedModalItem.status}</p>
+                                            <p>Price: {selectedModalItem.price ? formatPrice(selectedModalItem.price) : "Price not available"}</p>
+                                          </div>
+                                          <div className="modal-footer">
+                                            <button type="button" className="btn btn-primary" onClick={() => addToCart(selectedModalItem)}>Add to Cart</button>
                                           </div>
                                         </div>
                                       </div>
+                                    </div>
                                     )}
                                   </div>
                                 </div>
@@ -268,9 +393,7 @@
                     </li>
                   ))}
                 </ul>
-                <hr/>
                 <ul id="orderlist" className="list-unstyled" style={{ height: '30vh', overflowY: 'auto' }}></ul>
-                <hr/>
                 <ul className="list-unstyled">
                   <li className="d-flex justify-content-between align-items-center">
                     <big className="fw-bold" style={{ fontFamily: "'JetBrains Mono', monospace" }}>Total items:</big>
@@ -281,17 +404,112 @@
                     <big className="fw-bold">{parseFloat(orderTotalCost()).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</big>
                   </li>
                   <hr />
+                  {/* Phần hiển thị thông tin khách hàng */}
+                  {customerInfo && (
+                    <div className="customer-info mt-4">
+                      <h5 className="fw-bold">Customer Information</h5>
+                      <p><strong>Name:</strong> {customerInfo.fullname}</p>
+                      <p><strong>Address:</strong> {customerInfo.address}</p>
+                      <p><strong>Phone Number:</strong> {customerInfo.phone_number}</p>
+                    </div>
+                  )}
                   <li>
-                    <button className="btn btn-primary btn-lg w-100">CHECK OUT</button>
-                    {showPhoneModal && (
-                      <div className="modal">
-                        <div className="modal-content">
-                          <span className="close" onClick={() => setShowPhoneModal(false)}>&times;</span>
-                          <input type="tel" placeholder="Nhập số điện thoại của bạn..." value={phoneNumber} onChange={handlePhoneInputChange}/>
-                          <button onClick={handlePhoneSubmit}>Xác nhận</button>
-                        </div>
-                      </div>
-                    )}
+                    <button className="btn btn-primary btn-lg w-100" onClick={handleCheckout}>CHECK OUT</button>
+                    {/* Modal */}
+                    <Modal show={showModalCheckout} onHide={() => setShowModalCheckout(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Checkout Modal</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div>
+                              <h5>Order Summary</h5>
+                              <ul>
+                                {orderArray.map((item, index) => (
+                                  <li key={index}>
+                                    <strong>{item.name}</strong> - {formatPrice(item.price)}
+                                  </li>
+                                ))}
+                              </ul>
+                              <p>Total items: {orderTotalItems()}</p>
+                              <p>Total amount: {parseFloat(orderTotalCost()).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
+                              {customerInfo && (
+                                <div className="customer-info mt-4">
+                                  <h5 className="fw-bold">Customer Information</h5>
+                                  <p><strong>Name:</strong> {customerInfo.fullname}</p>
+                                  <p><strong>Address:</strong> {customerInfo.address}</p>
+                                  <p><strong>Phone Number:</strong> {customerInfo.phone_number}</p>
+                                </div>
+                              )}
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="Enter phone number"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                            />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <button variant="secondary" onClick={() => setShowModalCheckout(false)}>
+                                Close
+                            </button>
+                            <button variant="primary" onClick={handleConfirmPhoneNumber}>
+                                Confirm
+                            </button>
+                        </Modal.Footer>
+                    </Modal>
+
+                    <Modal show={showCreateAccountModal} onHide={() => setShowCreateAccountModal(false)}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>Create New Account</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <form onSubmit={handleCreateAccount}>
+                          <div className="mb-3">
+                            <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
+                            {/* Phone Number */}
+                            <input 
+                              type="text" 
+                              className={`form-control ${phoneNumberError ? 'is-invalid' : ''}`} 
+                              id="phoneNumber" 
+                              value={phoneNumber} 
+                              onChange={(e) => {
+                                setPhoneNumber(e.target.value);
+                                setPhoneNumberError(false);
+                              }}
+                            />
+                            {phoneNumberError && <div className="invalid-feedback">Please enter phone number</div>}
+
+                            {/* Full Name */}
+                            <input 
+                              type="text" 
+                              className={`form-control ${fullNameError ? 'is-invalid' : ''}`} 
+                              id="fullName" 
+                              value={fullName} 
+                              onChange={(e) => {
+                                setFullName(e.target.value);
+                                setFullNameError(false);
+                              }}
+                            />
+                            {fullNameError && <div className="invalid-feedback">Please enter full name</div>}
+
+                            {/* Address */}
+                            <input 
+                              type="text" 
+                              className={`form-control ${addressError ? 'is-invalid' : ''}`} 
+                              id="address" 
+                              value={address} 
+                              onChange={(e) => {
+                                setAddress(e.target.value);
+                                setAddressError(false);
+                              }}
+                            />
+                            {addressError && <div className="invalid-feedback">Please enter address</div>}
+                          </div>
+                          <button type="submit" className="btn btn-primary">Create Account</button>
+                          <button type="button" className="btn btn-secondary" onClick={() => setShowCreateAccountModal(false)}>Cancel</button>
+                        </form>
+                      </Modal.Body>
+                    </Modal>
                   </li>
                 </ul>
               </div>
@@ -304,5 +522,3 @@
 };
 
 export default Main;
-
-// Modal boostrap react

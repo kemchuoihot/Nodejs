@@ -28,28 +28,21 @@ router.post('/', async (req, res) => {
   console.log(req.body);
 });
 
-router.post('/checkout', async (req, res) => {
+router.get('/barcode/:barcode', async (req, res) => {
+  const barcode = req.params.barcode;
+
   try {
-    const { phone_number } = req.body;
+    const androidPhone = await Phone.findOne({ barcode: barcode, brand: 'Android' });
 
-    // Kiểm tra xem số điện thoại đã tồn tại trong cơ sở dữ liệu hay chưa
-    const existingCustomer = await Customer.findOne({ phone_number });
-
-    if (existingCustomer) {
-      // Nếu số điện thoại đã tồn tại, trả về thông tin của khách hàng
-      return res.status(200).json({ customer: existingCustomer });
-    } else {
-      // Nếu số điện thoại chưa tồn tại, tạo khách hàng mới
-      const { fullname, address } = req.body; // Lấy thông tin fullname và address từ request
-
-      const newCustomer = new Customer({ fullname, address, phone_number });
-      await newCustomer.save();
-
-      return res.status(201).json({ customer: newCustomer });
+    if (!androidPhone) {
+      return res.status(404).json({ message: 'Không tìm thấy sản phẩm với mã vạch này.' });
     }
+
+    res.status(200).json(androidPhone);
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: 'Lỗi khi tìm kiếm sản phẩm.' });
   }
 });
+
 
 module.exports = router;
