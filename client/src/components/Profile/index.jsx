@@ -107,7 +107,7 @@ const Profile = () => {
                                             <FontAwesomeIcon icon={faSkype} size="lg" />
                                         </button>
                                     </div>
-                                    <button type="button" className="btn btn-primary btn-rounded btn-lg" onClick={handleEditClick}>
+                                    <button type="button" className="btn btn-primary btn-rounded btn-green btn-lg" onClick={handleEditClick}>
                                         Edit infor.
                                     </button>
 
