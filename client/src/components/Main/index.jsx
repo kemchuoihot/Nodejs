@@ -33,7 +33,7 @@
     useEffect(() => {
       const fetchIphoneData = async () => {
           try {
-              const response = await axios.get('http://localhost:5000/home');
+              const response = await axios.get('/home');
               setIphoneItems(response.data.filter(item => item.brand === 'Apple'));
               console.log(response.data);
           }
@@ -47,7 +47,7 @@
     useEffect(() => {
       const fetchAndroidData = async () => {
           try {
-              const response = await axios.get('http://localhost:5000/android');
+              const response = await axios.get('/android');
               setAndroidItems(response.data.filter(item => item.brand === 'Android'));
               console.log(response.data);
           }
@@ -121,7 +121,7 @@
 
   const handlePhoneSubmit = async() => {
     try {
-      const response = await axios.post('http://localhost:5000/check-phone', {phone_number: phoneNumber});
+      const response = await axios.post('/check-phone', {phone_number: phoneNumber});
       const { customer } = response.data;
 
       if(customer) {
@@ -138,7 +138,7 @@
 
   const handleCreateAccount = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/create-account', {
+      const response = await axios.post('/create-account', {
         phone_number: phoneNumber,
         fullname: fullname,
         address: address,
