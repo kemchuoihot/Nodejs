@@ -9,7 +9,9 @@ import Employee from './components/Employee';
 import Product from './components/Product';
 import Profile from './components/Profile';
 import AddEmployee from './components/Employee/addEmployee';
+import AddProduct from './components/Product/addProduct';
 import Verify from './components/Verify';
+import EditProduct from './components/Product/editProduct';
 function App() {
 
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/dashboard/product" element={<Product />} />
         <Route path="/dashboard/profile" element={<Profile />} />
         <Route path="/dashboard/add_employee" element={<AddEmployee />} />
+        <Route path="/dashboard/add_product" element={<AddProduct />} />
+        <Route path="/dashboard/edit_product" element={<EditProduct />} />
       </Route>
       <Route path="/main" exact element={<Main />} />
       <Route path="/verify" exact element={<Verify />} />

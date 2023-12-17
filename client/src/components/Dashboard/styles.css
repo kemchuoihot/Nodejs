@@ -39,11 +39,11 @@ i:hover{
 .title{
     width: 100%;
     text-align: center;
-    color: #3282B8;
+    color: #E9B384;
 }
 
 .user-name{
-    height: 30px;
-    width: 100px;
+    height: auto;
+    width: auto;
     margin: auto;
 }

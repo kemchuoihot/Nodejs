@@ -13,18 +13,18 @@ router.post('/',loginValidator,async (req,res) =>{
         const account = await Account.findOne({username: req.body.username});
         if(!account){
             // res.json({loginStatus: false});
-            return res.status(401).send({message:"Invalid email or password"});
+            return res.status(401).send({message:"Invalid username or password"});
         }
         const validPassword = await bcrypt.compare(
             req.body.password, account.password
         );
         if(!validPassword){
             // res.json({loginStatus: false});
-            return res.status(401).send({message:"Invalid email or password"});
+            return res.status(401).send({message:"Invalid username or password"});
         }
         else{
             const token = jwt.sign({username: account.username},process.env.JWTPRIVATEKEY,{expiresIn: '1h'});
-            res.json({loginStatus: true, token: token});
+            res.json({loginStatus: true, token: token,account: account});
         }
     } catch (error) {
         // res.json({loginStatus: false});

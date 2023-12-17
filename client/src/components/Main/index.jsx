@@ -31,8 +31,6 @@ const Main = () => {
   const [product, setProduct] = useState(null);
   const [error, setError] = useState('');
 
-
-
   useEffect(() => {
     const fetchIphoneData = async () => {
         try {

@@ -41,7 +41,7 @@ const Verify = () => {
                 if(result.data.Status){
                     alert("Password changed successfully");
                     setTimeout(() => {
-                        navigte("/dashboard");
+                        navigte("/login");
                     }, 1000);
                     
                 }else{

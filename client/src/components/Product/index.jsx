@@ -12,12 +12,16 @@ const Product = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [deleteValue, setDeleteValue] = useState("");
+    const [items, setItems] = useState({});
+    const [role, setRole] = useState("");
 
     useEffect(() => { 
         fetchData();
     },[]);
 
     const fetchData = () => {
+        const account = JSON.parse(localStorage.getItem("account"));
+        setRole(account.role);
         axios.get('http://localhost:5000/product')
         .then(result =>{
             if(result.data.Status){
@@ -26,6 +30,7 @@ const Product = () => {
                 alert(result.data.Error);
             }
         }).catch(error =>{ console.log(error)});
+        localStorage.removeItem('item');
     };
 
     const deleteProduct = () => {
@@ -41,6 +46,7 @@ const Product = () => {
         }
         ).catch(error =>{ console.log(error)});
     };
+
     // const handleRefresh = () => {
     //     setLoading(true);
     //     fetchData();
@@ -57,6 +63,9 @@ const Product = () => {
                 <h1 className='title'>Product List</h1>
             </div>
             <div className="d-flex justify-content-between">
+                <Link to="/dashboard/add_product" className="btn btn-info btn-add">
+                    Add Product
+                </Link>
                 {/* <Link to="/dashboard/add_employee" className="btn btn-info btn-add">
                     Add Employee
                 </Link>
@@ -79,7 +88,9 @@ const Product = () => {
                             <th scope='col'>Brand</th>
                             <th scope='col'>Color</th>
                             <th scope='col'>Price (VNĐ)</th>
-                            <th scope='col'>Action</th>
+                            
+                            {role === 'admin' && (<th scope='col'>Import Price (VNĐ)</th>)}
+                            {role == 'admin' && (<th scope='col'>Action</th>)}
                             
                         </tr>
                     </thead>
@@ -98,16 +109,16 @@ const Product = () => {
                                 {e.name}</td>
                                 <td>{e.brand}</td>
                                 <td>{e.color}</td>
-                                <td>{e.price}</td>
+                                <td>{e.price}đ</td>
+                                {role == 'admin' && (<td>{e.import}đ</td>)}
                                 
-                                <td>
+                                {role == 'admin' && (<td>
                                     <Button 
                                         type="button"
                                         className ="btn btn-outline-secondary btn-rounded btn-green btn-sm mr-2"
                                         data-mdb-ripple-color="dark"
-                                        // onClick={() => { handleShow(); }}
                                         >
-                                    Edit
+                                    <Link to="/dashboard/edit_product" className='text-white' onClick={() =>localStorage.setItem('item', JSON.stringify(e))}>Edit</Link>
                                     </Button>
                                     <Button 
                                         type="button"
@@ -117,7 +128,7 @@ const Product = () => {
                                         >
                                     Delete
                                     </Button>
-                                </td>
+                                </td>)}
                                 
                             </tr>
                         ))

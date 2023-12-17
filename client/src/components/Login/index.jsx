@@ -35,7 +35,13 @@ const Signup = () => {
                 console.log(result);
                 const res = result.data;
                 if(res.loginStatus){
+                    if(res.account.status === 'inactive'){
+                        setError("Your account is inactive. Please contact to admin.");
+                        setLoading(false);
+                        return;
+                    }
                     localStorage.setItem("token",res.token);
+                    localStorage.setItem("account",JSON.stringify(res.account));
                     navigte("/dashboard");
                 }
                 setLoading(false);

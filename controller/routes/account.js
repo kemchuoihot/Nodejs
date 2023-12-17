@@ -17,11 +17,12 @@ router.post('/',midAdd,signupValidator,async (req,res) =>{
         if(account){
             return res.status(409).send({message: "Already exists"});
         }
-        const defaultPassword = "123456"
-        const hashPassword = await bcrypt.hash(defaultPassword,10);
+        
         console.log(req.body)
         const {name,email} = req.body
         const username = email.split('@')[0]
+        const defaultPassword = username
+        const hashPassword = await bcrypt.hash(defaultPassword,10);
         const user = new Account({name:name,email:email,username:username,password:hashPassword});
         await user.save();
         const token = jwt.sign(user.toJSON(),process.env.JWTPRIVATEKEY,{expiresIn: '1m'});
