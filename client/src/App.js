@@ -8,6 +8,7 @@ import Home from './components/Home';
 import Employee from './components/Employee';
 import Product from './components/Product';
 import Profile from './components/Profile';
+import Customer from './components/Customer';
 import AddEmployee from './components/Employee/addEmployee';
 import AddProduct from './components/Product/addProduct';
 import Verify from './components/Verify';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/dashboard/employee" element={<Employee />} />
         <Route path="/dashboard/product" element={<Product />} />
         <Route path="/dashboard/profile" element={<Profile />} />
+        <Route path="/dashboard/customer" element={<Customer />} />
         <Route path="/dashboard/add_employee" element={<AddEmployee />} />
         <Route path="/dashboard/add_product" element={<AddProduct />} />
         <Route path="/dashboard/edit_product" element={<EditProduct />} />
