@@ -1,0 +1,16 @@
+.customer-info-container {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+  
+.customer-info-container h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+  
+.customer-details p {
+    margin-bottom: 10px;
+}

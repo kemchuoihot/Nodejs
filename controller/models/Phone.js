@@ -40,7 +40,6 @@ const PhoneSchema = new mongoose.Schema({
   
   import:{
     type: Number,
-    // required: true,
     default: 0
   }
 })

@@ -50,5 +50,25 @@ router.post('/create', async (req, res) => {
     }
 });
 
+// Endpoint GET /customers - Trả về danh sách tất cả các khách hàng
+router.get('/customers', async (req, res) => {
+    try {
+      const customers = await Customer.find();
+      res.json(customers);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+ });
+  
+// Endpoint GET /customer/:customerId - Trả về thông tin chi tiết của một khách hàng cụ thể
+router.get('/customer/:customerId', async (req, res) => {
+    const { customerId } = req.params;
+    try {
+      const customer = await Customer.findById(customerId);
+      res.json(customer);
+    } catch (err) {
+      res.status(404).json({ message: 'Không tìm thấy khách hàng' });
+    }
+});
 
 module.exports = router;

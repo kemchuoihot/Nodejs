@@ -8,6 +8,7 @@ const authRoutes = require('./controller/routes/auth');
 const homeRoutes = require('./controller/routes/home');
 const androidRoutes = require('./controller/routes/android');
 const customerRoutes = require('./controller/routes/customer');
+const purchaseHistoryRoutes = require('./controller/routes/purchaseHistory');
 const verifyRoutes = require('./controller/routes/verify')
 const productsRoutes = require('./controller/routes/product')
 const changePass = require('./controller/routes/changePass');
@@ -15,7 +16,7 @@ const changePass = require('./controller/routes/changePass');
 const app = express();
 
 const corsOptions = {
-  origin: 'http://localhost:3000', // hoặc '*' nếu bạn muốn cho phép tất cả các origin
+  origin: 'http://localhost:3000',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
@@ -51,12 +52,15 @@ app.use('/', (req, res, next) => {
 app.use("/account", accountRoutes);
 app.use("/auth", authRoutes);
 app.use("/verify",verifyRoutes);
+
 app.use("/home",homeRoutes);
 app.use("/android",androidRoutes);
 app.use("/customer", customerRoutes);
+app.use("/purchaseHistory", purchaseHistoryRoutes);
 
 app.use("/product",productsRoutes);
 app.use("/changePass",changePass);
+
 
 app.use(cors());
 

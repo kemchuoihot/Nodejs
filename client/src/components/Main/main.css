@@ -1,6 +1,4 @@
-
-/* CSS TỔNG QUÁT */
-
+/* CSS cho hiệu ứng card */
 .card {
   display: flex;
   flex-direction: column;
@@ -69,6 +67,74 @@
   padding: 20px;
 }
 
+.modal-body {
+  display: flex;
+  align-items: center;
+}
+
+.item-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover; /* Đảm bảo ảnh không bị méo khi kích thước thay đổi */
+  margin-right: 20px;
+}
+
+.item-details {
+  flex: 1; /* Phần thông tin chi tiết mở rộng để điều chỉnh kích thước */
+  color: #333;
+}
+
+.item-details h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.desc {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.status, .price {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #f76c6c;
+}
+
+.btn-add-to-cart {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-add-to-cart:hover {
+  background-color: #0056b3;
+}
+
+/* CSS cho hiệu ứng khi hover vào ảnh */
+.card-img-iphone {
+  padding: 7px;
+  transition: transform 0.3s ease; /* Thêm transition cho hiệu ứng mượt mà */
+}
+
+.card-img-iphone:hover {
+  transform: scale(1.05); /* Phóng to ảnh khi hover */
+}
+
+/* CSS cho hiệu ứng khi hover vào ảnh */
+.card-img-android {
+  padding: 7px;
+  transition: transform 0.3s ease; /* Thêm transition cho hiệu ứng mượt mà */
+}
+
+.card-img-android:hover {
+  transform: scale(1.05); /* Phóng to ảnh khi hover */
+}
+
+
 @keyframes modal-animation {
   from {
     top: -50%;
@@ -97,8 +163,99 @@
   margin-bottom: 5px;
 }
 
-/* Các style khác có thể được thêm vào tùy theo ý của bạn */
 .form-control {
   margin-bottom: 10px; /* Thêm khoảng cách dưới cho mỗi ô textbox */
 }
+/* CSS cho phần input và button tìm kiếm */
+.search-bar-container {
+  position: relative;
+}
 
+.search-input {
+  position: absolute;
+  top: 0;
+  right: 110px; /* Điều chỉnh khoảng cách từ phần input đến mép phải của thẻ card */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.search-button {
+  position: absolute;
+  top: 0;
+  right: 0; /* Điều chỉnh khoảng cách từ button tới mép phải của thẻ card */
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+/* CSS */
+.list-unstyled li p {
+  /* Điều chỉnh kích thước font và hạn chế độ dài của nội dung */
+  font-size: 14px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* CSS */
+#orderlist {
+  border: 1px solid #ccc; /* Độ dày và màu sắc của border */
+  border-radius: 5px; /* Cong viền của border */
+  padding: 15px; /* Khoảng cách bên trong border */
+}
+
+.card-title.name, .card-text.price {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+li {
+  white-space: nowrap;
+}
+
+ul {
+  list-style-type: none; /* Loại bỏ chỉ mục mặc định của danh sách ul */
+}
+
+.button-container {
+  display: flex;
+  gap: 10px; /* Khoảng cách giữa các phần tử con */
+}
+
+/* Thay đổi khoảng cách giữa các button */
+.btn-primary {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+/* Thay đổi màu sắc và kích thước của các button */
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+/* Hover effect khi di chuột vào button */
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.buyButton {
+  display: block; /* Đặt nút BUY thành block để nó xuống dòng */
+  margin-top: 10px; /* Tạo khoảng cách từ trên xuống giữa nút CHECK OUT và nút BUY */
+}
